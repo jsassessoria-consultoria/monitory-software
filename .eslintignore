@@ -1,0 +1,9 @@
+node_modules
+dist
+*.js
+*.json
+README.md
+.env*
+prisma/**/*
+docker-compose*
+Dockerfile*
