@@ -19,7 +19,9 @@
 		]
 	},
 	"dependencies": {
+		"@types/readline-sync": "^1.4.4",
 		"jest": "^29.3.1",
+		"readline-sync": "^1.4.10",
 		"ts-jest": "^29.0.3"
 	},
 	"devDependencies": {
