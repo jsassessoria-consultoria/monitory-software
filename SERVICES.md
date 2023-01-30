@@ -1,7 +1,6 @@
 # Tudo que precisa saber sobre o código de serviço
 
 Created time: January 30, 2023 10:52 AM
-Last edited time: January 30, 2023 11:20 AM
 
 # 👀 Tipo de arquivo
 

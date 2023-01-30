@@ -1,7 +1,6 @@
 # Tudo que precisa saber sobre o deploy
 
 Created time: January 30, 2023 10:52 AM
-Last edited time: January 30, 2023 1:31 PM
 
 # 👀 Organização principal
 
