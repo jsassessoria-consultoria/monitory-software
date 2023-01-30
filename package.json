@@ -2,15 +2,36 @@
 	"name": "monitory-software",
 	"version": "0.1.0",
 	"description": "",
-	"main": "index.js",
-	"type": "module",
+	"bin": "assets/js/decompress.js",
 	"scripts": {
-		"build": "ttsc -p tsconfig.build.json",
-		"start": "node dist/src/app.js",
+		"build:restore": "rm -rf dist/ monitory_sftw.exe assets/build.zip build/ assets/service-uninstall.exe  assets/service-install.exe",
+		"build:ts": "tsc -p tsconfig.build.json",
+		"create:install": "pkg assets/js/service-install.js --config assets/services-pkg-config.json -o assets/service-install.exe",
+		"create:uninstall": "pkg assets/js/service-uninstall.js --config assets/services-pkg-config.json -o assets/service-uninstall.exe",
+		"build:webpack": "webpack",
+		"build:prepare": "cp -r assets/* build/ &&  mkdir build\\logs && rm -rf build/js/ && rm -rf build/*.json",
+		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
+		"build:app:exe": "pkg build/bundle.js -t node14-win-x64 --output build/build.exe --debug",
+		"deploy:zip": "node assets/js/compress.js",
+		"deploy:exe": "pkg . --output monitory_sftw.exe",
+		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:zip && npm run deploy:exe",
+		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
 		"test": "vitest",
 		"lint:staged": "lint-staged",
 		"prepare": "husky install"
+	},
+	"pkg": {
+		"scripts": [
+			"assets/js/decompress.js",
+			"./config/*.js"
+		],
+		"assets": [
+			"assets/build.zip"
+		],
+		"targets": [
+			"node14-win-x64"
+		]
 	},
 	"lint-staged": {
 		"**/*.{ts}": [
@@ -22,6 +43,9 @@
 		"@types/jest": "^29.2.3",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
+		"@babel/cli": "^7.20.7",
+		"@babel/core": "^7.20.12",
+		"@babel/preset-env": "^7.20.2",
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -32,6 +56,14 @@
 		"ts-node": "^10.9.1",
 		"ttypescript": "^1.5.13",
 		"typescript": "^4.8.4",
-		"vitest": "^0.28.1"
+		"vitest": "^0.28.1",
+		"webpack-cli": "^5.0.1",
+		"webpack": "^5.75.0",
+		"pkg": "^5.8.0"
+	},
+	"dependencies": {
+		"adm-zip": "^0.5.10",
+		"babel-loader": "^9.1.2",
+		"express": "^4.18.2"
 	}
 }
