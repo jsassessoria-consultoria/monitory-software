@@ -17,7 +17,8 @@
 		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:zip && npm run deploy:exe",
 		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
-		"test": "vitest",
+		"test": "vitest run",
+		"test:building": "vitest run --config ./vite.building.config.ts",
 		"lint:staged": "lint-staged",
 		"prepare": "husky install"
 	},
