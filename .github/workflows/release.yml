@@ -1,0 +1,65 @@
+# Nome da action
+name: Release
+
+# Evento que ativa a action
+on:
+  push:
+    tags: 
+      - v*
+
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+
+      # Faz o checkout para a máquina no github
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Gera o arquivo .exe na máquina do github
+      - name: Generate .exe file
+        run: npm i && npm run deploy:start
+        shell: bash 
+
+      # Faz o upload do arquivo .exe da máquina do github para o github
+      - name: Upload .exe file to Github
+        uses: actions/upload-artifact@v2
+        with:
+          name: monitory_sftw
+          path: monitory_sftw.exe
+
+      # Cria um changelog baseado nas PR´s 
+      - name: "Build Changelog"
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v3
+
+      # Cria uma release no repositório
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: ${{steps.build_changelog.outputs.changelog}}
+        
+      # Adiciona o arquivo .exe do github na release
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: monitory_sftw.exe
+          asset_name: monitory_sftw.exe
+          asset_content_type: application/octet-stream
+
+
+
+    
