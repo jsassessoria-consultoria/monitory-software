@@ -1,11 +1,12 @@
 import express from 'express';
-import os from 'os';
 
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send(os.cpus());
+  res.send('Server is running fine !!');
 });
 
 const PORT = 4000;
-app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server is running at ${PORT}, open the brownser`)
+);
