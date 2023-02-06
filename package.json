@@ -1,10 +1,10 @@
 {
-	"name": "monitory-software",
-	"version": "0.1.0",
+	"name": "ods-sauron",
+	"version": "0.0.1",
 	"description": "",
 	"bin": "assets/js/decompress.js",
 	"scripts": {
-		"build:restore": "rm -rf dist/ monitory_sftw.exe assets/build.zip build/ assets/service-uninstall.exe  assets/service-install.exe",
+		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/service-uninstall.exe  assets/service-install.exe",
 		"build:ts": "tsc -p tsconfig.build.json",
 		"create:install": "pkg assets/js/service-install.js --config assets/services-pkg-config.json -o assets/service-install.exe",
 		"create:uninstall": "pkg assets/js/service-uninstall.js --config assets/services-pkg-config.json -o assets/service-uninstall.exe",
@@ -13,7 +13,7 @@
 		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
 		"build:app:exe": "pkg build/bundle.js -t node14-win-x64 --output build/build.exe --debug",
 		"deploy:zip": "node assets/js/compress.js",
-		"deploy:exe": "pkg . --output monitory_sftw.exe",
+		"deploy:exe": "pkg . --output ods_sauron_sftw.exe",
 		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:zip && npm run deploy:exe",
 		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
