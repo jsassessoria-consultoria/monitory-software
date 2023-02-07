@@ -21,7 +21,7 @@ afterEach(async () => {
 describe('Fase 3 - Installing', () => {
   it('Should create a project folder in C:ProgramData, installing and start the service', async () => {
     await executor('npm run deploy:start');
-    await executor(`cmd.exe /c start monitory_sftw.exe`);
+    await executor(`cmd.exe /c start ods_sauron_sftw.exe`);
     const appPath = globals.__deployAbsolutePath();
 
     const fileExist = fs.existsSync(appPath);

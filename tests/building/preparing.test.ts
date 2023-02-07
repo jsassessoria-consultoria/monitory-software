@@ -26,7 +26,7 @@ describe('Fase 2 - Prepare to deploy', () => {
   });
 
   it('Should create a .exe file of containing build.zip, decompress.js and config/ folder in root dir', async () => {
-    const zipPath = path.join(process.cwd(), 'monitory_sftw.exe');
+    const zipPath = path.join(process.cwd(), 'ods_sauron_sftw.exe');
 
     await executor('npm run build:ts');
     await executor('npm run build:webpack-prepare');

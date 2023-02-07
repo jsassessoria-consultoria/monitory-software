@@ -100,13 +100,13 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 - Comprimir a pasta `build/`
     - A pasta build/ agora tem tudo que é necessário para que a aplicação funcione, externamente, só faltaria copiar e colar a mesma dentro da máquina do usuário. Então iremos fazer isso de uma forma ideal e precisa.
     - A pasta `build/` é comprimida através do arquivo `compress.js` que está dentro de `assets/js` e o arquivo `build.zip`  é colocado dentro de `assets/`
-- Crio o executável do deploy, o `monitory_sftw.exe`
-    - Para entender melhor como o monitory_sftw funciona, é importante entender o `pkg`
+- Crio o executável do deploy, o `ods_sauron_sftw.exe`
+    - Para entender melhor como o ods_sauron_sftw funciona, é importante entender o `pkg`
         - No pkg, o executável sempre executará um arquivo .js, rodando através do node. Com o comando `node <nome do arquivo>` e poderá adicionar outros arquivos como assets e/ou como scripts
-    - No caso do monitory_sftw.exe, o arquivo de inicialização é o `decompress.js` localizado em `assets/js/decompress.js`, esse arquivo tem a função de descompactar o `build.zip`
+    - No caso do ods_sauron_sftw.exe, o arquivo de inicialização é o `decompress.js` localizado em `assets/js/decompress.js`, esse arquivo tem a função de descompactar o `build.zip`
     - Como um assets para o `pkg` é passado o `build.zip`  ou seja, o build.zip é empacotado junto com o decompress.js
     - E como um script adicional, é passado o `config/global.js` que contém variáveis globais. Um arquivo de configuração global.
-    - Todas essas configurações sobre o `pkg` gerar o monitory_sftw.exe está no package.json, na aba:
+    - Todas essas configurações sobre o `pkg` gerar o ods_sauron_sftw.exe está no package.json, na aba:
     
     ```json
     "bin": "assets/js/decompress.js", -> Arquivo de inicialização do pkg
@@ -128,7 +128,7 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
     
 
 <aside>
-💡 Após o monitory_sftw.exe ser gerado, ele poderá ser compartilhado com qualquer usuário e partirá para a fase de instalação
+💡 Após o ods_sauron_sftw.exe ser gerado, ele poderá ser compartilhado com qualquer usuário e partirá para a fase de instalação
 
 </aside>
 
@@ -136,7 +136,7 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 
 ---
 
- Na instalação o `monitory_sftw.exe` irá chamar o `decompress.js` que irá realizar as seguintes funções
+ Na instalação o `ods_sauron_sftw.exe` irá chamar o `decompress.js` que irá realizar as seguintes funções
 
 - Criação de pastas
     

@@ -29,8 +29,8 @@ jobs:
       - name: Upload .exe file to Github
         uses: actions/upload-artifact@v2
         with:
-          name: monitory_sftw
-          path: monitory_sftw.exe
+          name: ods_sauron_sftw
+          path: ods_sauron_sftw.exe
 
       # Cria um changelog baseado nas PR´s 
       - name: "Build Changelog"
@@ -56,8 +56,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: monitory_sftw.exe
-          asset_name: monitory_sftw.exe
+          asset_path: ods_sauron_sftw.exe
+          asset_name: ods_sauron_sftw.exe
           asset_content_type: application/octet-stream
 
 

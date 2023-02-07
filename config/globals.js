@@ -1,8 +1,8 @@
 const path = require('path')
 
 module.exports = {
-    __appName: 'Monitory_Software',
-    __serviceName: 'My_Service',
+    __appName: 'ODSSauron',
+    __serviceName: 'ODSSauron',
     __localAbsolutePath: function () {
         // C:\<User>\...\<diretorio principal>
         return path.dirname(__dirname)
