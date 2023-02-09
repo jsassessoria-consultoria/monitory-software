@@ -6,8 +6,8 @@ Created time: January 30, 2023 10:52 AM
 
 > A organização do código atual é essa
 > 
+> ![folders](https://user-images.githubusercontent.com/98192816/217824805-f8121f34-21ac-45b5-8c8a-b855d7b69332.png)
 > 
-> ![Untitled](Tudo%20que%20precisa%20saber%20sobre%20o%20deploy%200a35af163b6a4f059d1997578c72291a/Untitled.png)
 > 
 
 Mas para o deploy, iremos dividir a nossa base de código em duas partes:
