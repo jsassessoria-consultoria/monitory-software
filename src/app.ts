@@ -1,11 +1,14 @@
-import express from 'express';
-import os from 'os';
+import collectProcesses from './services/collect';
+import { sendProcesses } from './api/process';
 
-const app = express();
+const keywords = ['code.exe'];
 
-app.get('/', (req, res) => {
-  res.send(os.cpus());
-});
+const interval = (timer: number) => {
+  setTimeout(async () => {
+    const processes = await collectProcesses(keywords);
+    await sendProcesses(processes);
+    interval(timer);
+  }, timer);
+};
 
-const PORT = 4000;
-app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+interval(10000);
