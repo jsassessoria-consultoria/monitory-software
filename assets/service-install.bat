@@ -28,7 +28,7 @@ ECHO INSTALLING SERVICE %SERVICENAME%
 
 %NSSM% set %SERVICENAME% Application %APP_DIR%\build.exe
 %NSSM% set %SERVICENAME% AppDirectory %APP_DIR%
-%NSSM% set %SERVICENAME% Description "Node Windows Service test"
+%NSSM% set %SERVICENAME% Description "Sotfware Monitoring Service"
 %NSSM% set %SERVICENAME% Start SERVICE_AUTO_START
 %NSSM% set %SERVICENAME% AppStopMethodSkip 0
 %NSSM% set %SERVICENAME% AppStopMethodConsole 0
