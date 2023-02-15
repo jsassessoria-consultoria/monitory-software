@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './dist/app.js', // arquivo de entrada
@@ -21,5 +22,15 @@ module.exports = {
             }
           }
         ]
-      }
+      },
+      plugins: [
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: './src/views/public/',
+              to: 'public/',
+            },
+          ],
+        }),
+      ]
   };

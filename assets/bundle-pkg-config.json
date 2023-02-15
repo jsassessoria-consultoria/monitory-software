@@ -1,0 +1,6 @@
+{
+    "pkg": {
+        "assets": ["public/"],
+        "targets": ["node14-win-x64"]
+    }
+}

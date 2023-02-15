@@ -9,6 +9,7 @@ const _URL = `http://localhost:${PORT}`;
 
 let TOKEN = null;
 
+//FIX: Open nãoo funciona no deploy (com o serviço)
 const openBrownser = async () => {
   server.start(PORT, _API_URL);
   await open(_URL);
