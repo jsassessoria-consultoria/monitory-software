@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/form.css">
+    <link rel="stylesheet" href="./css/complete.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <title>Register</title>
+</head>
+<body>
+    <div class="authorization-done hidden">
+        <ion-icon class="checkmark" name="checkmark-circle"></ion-icon>
+        <h1><strong>DISPOSITIVO CADASTRADO !</strong></h1>
+        <p>Esta aba será fechada dentro de 10s</p>
+    </div>
+    <main>
+        <section>
+            <h1>ODS SAURON</h1>
+            <p>Por favor, preencha o formulário abaixo para cadastrar o seu dispositivo</p>        
+        </section>
+        <form>
+            <article>
+                <label>Nome do usuário: </label>
+                <input  minlength="3" maxlength="30" class="user-name" type="text" />
+            </article>
+            <article>
+                <label>Nome do dispositivo: </label>
+                <div class="input-area">
+                    <input class="device-name" readonly minlength="3" maxlength="18" type="text" />
+                    <ion-icon class="icon-pencil" name="pencil-outline"></ion-icon>
+                </div>
+            </article>
+            <button type="submit">CADASTRAR</button>
+        </form>
+    </main>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module" src="./scripts/register.js"></script>
+</body>
+</html>

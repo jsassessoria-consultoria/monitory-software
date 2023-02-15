@@ -1,14 +1,29 @@
-import collectProcesses from './services/collect';
-import { sendProcesses } from './api/process';
+import collect from './monitoring/collectAndSend';
+import { server } from './views/server';
+import open from 'open';
 
-const keywords = ['code.exe'];
+const PORT = 5000;
+//url da API do backend do ODS SAURON
+const _API_URL = 'http://localhost:4000/register';
+const _URL = `http://localhost:${PORT}`;
 
-const interval = (timer: number) => {
-  setTimeout(async () => {
-    const processes = await collectProcesses(keywords);
-    await sendProcesses(processes);
-    interval(timer);
-  }, timer);
+let TOKEN = null;
+
+const openBrownser = async () => {
+  server.start(PORT, _API_URL);
+  await open(_URL);
+
+  const checkToken = setInterval(() => {
+    TOKEN = server.token();
+    if (TOKEN) {
+      collect(10000);
+      clearInterval(checkToken);
+    }
+  }, 1000);
 };
 
-interval(10000);
+if (!TOKEN) {
+  openBrownser();
+} else {
+  collect(10000);
+}
