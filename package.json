@@ -14,7 +14,7 @@
 		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe --debug",
 		"deploy:zip": "node assets/js/compress.js",
 		"deploy:exe": "pkg . --output ods_sauron_sftw.exe",
-		"deploy:remove-unnecessary": "rm -rf build/bundle-pkg-config.json build/service-pkg-config.json",
+		"deploy:remove-unnecessary": "rm -rf build/bundle-pkg-config.json build/services-pkg-config.json",
 		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:remove-unnecessary && npm run deploy:zip && npm run deploy:exe",
 		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
