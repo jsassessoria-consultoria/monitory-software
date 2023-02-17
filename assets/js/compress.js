@@ -1,8 +1,8 @@
 const adminZip = require('adm-zip');
 const path = require('path')
+
 const globals = require('../../config/globals')
 
-console.log(globals.__localZipPath())
 
 async function zipFolder(folderPath) {
     return new Promise((resolve, reject) => {

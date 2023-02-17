@@ -48,7 +48,10 @@ const start = (PORT: number, API_URL: string) => {
     }
 
     try {
-      const { data } = await axios.post(API_URL, body);
+      const { data } = await axios.post(
+        API_URL.concat('/register'),
+        body
+      );
       const token = data.token;
       if (!token) {
         return res.status(400).send('Please try again');

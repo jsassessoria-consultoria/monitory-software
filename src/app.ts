@@ -1,18 +1,26 @@
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
+import open from 'open';
 import collect from './monitoring/collectAndSend';
 import { server } from './views/server';
-import open from 'open';
 
-const PORT = 5000;
+const env = dotenv.config();
+dotenvExpand.expand(env);
+
+const PORT = +process.env.PORT;
+const LOCAL_URL = process.env.LOCAL_URL;
+
 //url da API do backend do ODS SAURON
-const _API_URL = 'http://localhost:4000/register';
-const _URL = `http://localhost:${PORT}`;
+const _API_URL = process.env.API_URL;
 
 let TOKEN = null;
 
-//FIX: Open nãoo funciona no deploy (com o serviço)
-const openBrownser = async () => {
+const registerDevice = async () => {
   server.start(PORT, _API_URL);
-  await open(_URL);
+
+  if (process.env.NODE_ENV === 'dev') {
+    await open(LOCAL_URL);
+  }
 
   const checkToken = setInterval(() => {
     TOKEN = server.token();
@@ -24,7 +32,7 @@ const openBrownser = async () => {
 };
 
 if (!TOKEN) {
-  openBrownser();
+  registerDevice();
 } else {
   collect(10000);
 }
