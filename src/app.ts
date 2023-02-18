@@ -1,3 +1,4 @@
+
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import open from 'open';
@@ -36,3 +37,4 @@ if (!TOKEN) {
 } else {
   collect(10000);
 }
+
