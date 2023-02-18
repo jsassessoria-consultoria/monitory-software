@@ -40,17 +40,18 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 
 - `tsconfig.build.json` é acionado para transpilar o ts → js
     
-    O ts.build.json compila todo o código da aplicação ( do software ) para dentro de uma pasta chamada `dist` . Criando então um arquivo `.js` dentro dela. 
+    O ts.build.json compila todo o código da aplicação ( do software ) para dentro de uma pasta chamada `dist` . Criando então um arquivo `.js` dentro dela.  
+
     
     <aside>
     💡 É importante que a transpilação seja para CommonJS, isso porque um pacote que iremos usar posteriormente chamado `pkg` não interpreta o ESModules.
-    
     </aside>
     
     <aside>
     💡 É importante também que o código da aplicação possa se concentrar em um arquivo, isso não quer dizer que só precisa ter um arquivo, mas sim que precisa ter um arquivo de inicialização.
-    
     </aside>
+
+- São copiados os arquivos estáticos da pasta `views/public` como: `*.html`, `*.css` e `.js` para dentro da pasta `dist/views` 
     
 - Cria o `service-install.exe` e `service-uninstall.exe` dentro de **assets/**
     - Através do pacote `pkg` é possível criar executáveis através de scripts, então é criado um executável através do script `service-install.js` e outro de `service-uninstall.js`  que estão em `assets/js/`
@@ -92,6 +93,7 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 - Cria o `build.exe`
     - O arquivo bundle.js que foi criado pelo webpack agora é empacotado em uma aplicação node através do `pkg` , para que não seja necessário ter o node instalado na máquina do usuário para rodar nossa aplicação.
     - Criará um arquivo chamado `build.exe` dentro da pasta `build/`
+    - Removerá alguns arquivos desnecessários como: `services-pkg-config.json` e `bundle-pkg-config.json`, usados somente para configurar o executável criado, e agora sem mais utilidade para o deploy
 
 ## 📦 Fase de preparação para o deploy - Empacotando a aplicação
 

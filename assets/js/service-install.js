@@ -1,18 +1,24 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const globals = require('../../config/globals')
 
-console.log(`${globals.__deployAbsolutePath()}`)
 function installService(){
     return new Promise((resolve, reject) => {
-        try{
-            exec(`cd ${globals.__deployAbsolutePath()} && cmd.exe /c service-install.bat ${globals.__appName} ${globals.__serviceName}`, { }, (e, stdout) => {
-                if(e) console.log('Deu erro')
-                console.log(stdout)
+            const install = spawn(`cd ${globals.__deployAbsolutePath()} && cmd.exe`, ['/c',
+             'service-install.bat',
+             globals.__appName,
+             globals.__serviceName,
+             globals.__local_url()
+            ], { shell: 'cmd.exe'})
+            install.stdout.on('data', (data) => {
+              console.log(String(data))
+              resolve(data)
             })
-            resolve();
-        }catch(err) {
-            reject(err)
-        }
+        
+            install.stderr.on('data', (e) => {
+                console.log('Erro na instalação do serviço', String(e))
+                reject(e)
+
+            })
     })
 }
 

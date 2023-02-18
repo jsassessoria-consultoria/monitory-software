@@ -1,4 +1,6 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
     entry: './dist/app.js', // arquivo de entrada
@@ -21,5 +23,19 @@ module.exports = {
             }
           }
         ]
-      }
+      },
+      plugins: [
+        new Dotenv({
+          path:"./.env.production",
+          expand: true
+        }),
+        new CopyWebpackPlugin({
+          patterns: [
+            {
+              from: './src/views/public/',
+              to: 'public/',
+            },
+          ],
+        }),
+      ]
   };

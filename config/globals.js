@@ -1,4 +1,9 @@
 const path = require('path')
+const dotenv = require('dotenv')
+const dotenvExp = require('dotenv-expand')
+
+const env = dotenv.config();
+dotenvExp.expand(env)
 
 module.exports = {
     __appName: 'ODSSauron',
@@ -14,4 +19,7 @@ module.exports = {
     __localZipPath: function(){
         return path.join(this.__localAbsolutePath(),'assets/build.zip')
     },
+    __local_url: function() {
+        return process.env.LOCAL_URL
+    }
 }
