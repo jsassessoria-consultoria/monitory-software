@@ -8,16 +8,18 @@
 
 No [repositório do software](https://github.com/jsassessoria-consultoria/monitory-software) procure pela aba de `releases`, encontrado na aba à direita na seção `<>code`, e clique.
 
-#### imagem repo aqui
+![image](https://user-images.githubusercontent.com/98192816/222907286-6eb8eb85-77f4-4f26-b1d8-941e7b888057.png)
+
 
 - Procure pela versão mais recente (a mais ao topo), procure pela seção de `Assets` e baixe o arquivo `ods_sauron_sftw.exe`. 
 
-#### imagem releases aqui
+![image](https://user-images.githubusercontent.com/98192816/222907409-0a56b02b-aa55-4a84-950b-da9bc33aa6f5.png)
+
 
 - Se caso o navegar informar que aquela aplicação não é segura, mantenha o download mesmo assim
 - Após o termino do download, vá para a pasta onde o arquivo foi baixado e o execute como administrador
 
-#### imagem clicando aqui
+![image](https://user-images.githubusercontent.com/98192816/222907477-fb099c57-2883-47a8-b81d-7e6a1413f46f.png)
 
 - O arquivo irá abrir o prompt de comando, instalar as pastas e dependências automaticamente e inicialiar o serviço.
 
