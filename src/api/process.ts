@@ -1,7 +1,7 @@
 import instance from './axios';
 
 const sendProcesses = async (processes: string[]) => {
-  await instance.post('/registry', {
+  await instance.post('collect', {
     processes: processes
   });
 };
