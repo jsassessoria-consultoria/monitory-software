@@ -11,7 +11,7 @@
 		"build:webpack": "webpack --stats-children",
 		"build:prepare": "cp -r assets/* build/ &&  mkdir build\\logs && rm -rf build/js/",
 		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
-		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe --debug",
+		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe",
 		"deploy:zip": "node assets/js/compress.js",
 		"deploy:exe": "pkg . --output ods_sauron_sftw.exe",
 		"deploy:remove-unnecessary": "rm -rf build/bundle-pkg-config.json build/services-pkg-config.json",
@@ -46,13 +46,13 @@
 		"@babel/cli": "^7.20.7",
 		"@babel/core": "^7.20.12",
 		"@babel/preset-env": "^7.20.2",
-
 		"@types/express": "^4.17.17",
+		"@types/ffi-napi": "^4.0.7",
 		"@types/jest": "^29.2.3",
+		"@types/ref-napi": "^3.0.7",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
 		"copy-webpack-plugin": "^11.0.0",
-
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -66,19 +66,19 @@
 		"typescript": "^4.8.4",
 		"vitest": "^0.28.1",
 		"webpack": "^5.75.0",
-		"webpack-cli": "^5.0.1"
+		"webpack-cli": "^5.0.1",
+		"webpack-node-externals": "^3.0.0"
 	},
 	"dependencies": {
 		"adm-zip": "^0.5.10",
 		"axios": "^1.3.3",
 		"babel-loader": "^9.1.2",
-
 		"dotenv": "^16.0.3",
 		"dotenv-expand": "^10.0.0",
 		"dotenv-webpack": "^8.0.1",
 		"express": "^4.18.2",
+		"ffi-napi": "^4.0.3",
 		"open": "^8.4.1",
-
-		"systeminformation": "^5.17.9"
+		"ref-napi": "^3.0.3"
 	}
 }

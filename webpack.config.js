@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack')
+const nodeExternals = require('webpack-node-externals')
 
 module.exports = {
     entry: './dist/app.js', // arquivo de entrada
@@ -10,6 +11,9 @@ module.exports = {
       path: path.resolve(__dirname, 'build'), // pasta de saída
       filename: 'bundle.js' // nome do arquivo de saída
     },
+    externals: [nodeExternals({
+      allowlist: [/^(?!(ffi|ref)-napi$)[\w-]+$/] // Faz os bundles de todas as libs, exceto 'ffi-napi' e 'ref-napi'
+    })],
     module: {
         rules: [
           {

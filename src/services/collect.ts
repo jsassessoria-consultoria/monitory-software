@@ -1,77 +1,97 @@
-import si from 'systeminformation';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 
-const collectProcesses = async (keywords: string[]) => {
-  const data = await si.processes();
-  const allProcesses = data.list;
+import ffi from 'ffi-napi';
+import ref from 'ref-napi';
 
-  const filtering = filterProcesses(allProcesses, keywords);
-  const changedProcesses = addElapsedTime(filtering);
-  const oneInstacesPerKeyword = mapOlderInstances(
-    changedProcesses,
-    keywords
-  );
+/**
+ * Importa a lib em c++, user32 do windows ->
+ * Usada para acessar informações de janelas do windows
+ */
+const user32 = ffi.Library('user32.dll', {
+  EnumWindows: ['bool', ['pointer', 'int32']],
+  GetWindowTextA: ['long', ['long', 'char *', 'long']],
+  IsWindowVisible: ['bool', ['int32']],
+  GetWindowThreadProcessId: ['long', ['int32', 'pointer']]
+});
 
-  return oneInstacesPerKeyword;
-};
+/**
+ * Importa a lib em c++, kernel32 do windows ->
+ * Usada para informações de baixo nível, gerenciamento de memória, processos e threads
+ */
+const kernel32 = ffi.Library('kernel32.dll', {
+  OpenProcess: ['pointer', ['int32', 'bool', 'int32']],
+  QueryFullProcessImageNameA: [
+    'bool',
+    ['pointer', 'int32', 'char *', 'pointer']
+  ]
+});
+/**
+ * Importa a lib c++ do psapi ->
+ * Usada para acessar informações de processos
+ */
+const psapi = ffi.Library('psapi.dll', {
+  GetModuleBaseNameA: [
+    'uint32',
+    ['pointer', 'pointer', 'char *', 'uint32']
+  ]
+});
 
-const filterProcesses = (
-  processes: si.Systeminformation.ProcessesProcessData[],
-  keywords: string[]
-) => {
-  return processes.filter(process => {
-    return keywords.some(keyword => {
-      return process.name.toLowerCase().includes(keyword);
-    });
-  });
-};
+const MAPPROCESSES = new Map();
+/**
+ * Callback da função EnumWindows
+ */
+const windowProc = ffi.Callback(
+  'bool',
+  ['long', 'int32'],
+  function (hwnd, lParam) {
+    const PROCESS_QUERY_INFORMATION = 0x0400;
+    const PROCESS_VM_READ = 0x0010;
 
-const addElapsedTime = (
-  processes: si.Systeminformation.ProcessesProcessData[]
-) => {
-  return processes.map(process => {
-    return {
-      ...process,
-      elapsed: Date.now() - new Date(process.started).getTime()
-    };
-  });
-};
+    //Verifica se tem tela visível
+    if (!user32.IsWindowVisible(hwnd)) return true;
 
-const mapOlderInstances = (
-  processes: ReturnType<typeof addElapsedTime>,
-  keywords: string[]
-) => {
-  const keywordsMap: Record<
-    string,
-    ReturnType<typeof addElapsedTime>[0]
-  > = {};
-  const allProcesses: string[] = [];
-  processes.forEach(process => {
-    return keywords.some(keyword => {
-      const processName = process.name.toLowerCase();
-      const hasKeyword = processName.includes(keyword);
+    //Recupera o PID pela janela
+    const pidBuf = Buffer.alloc(10);
+    user32.GetWindowThreadProcessId(hwnd, pidBuf);
+    const pid = ref.readInt64LE(pidBuf, 0);
 
-      if (hasKeyword && keywordsMap[processName] === undefined) {
-        keywordsMap[processName] = process;
-      } else if (
-        hasKeyword &&
-        keywordsMap[processName].elapsed > process.elapsed
-      ) {
-        keywordsMap[processName] = process;
-      }
-    });
-  });
+    //Abre os dados do processo de acordo com o PID
+    const processHandle = kernel32.OpenProcess(
+      PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+      false,
+      pid
+    );
+    if (processHandle.isNull()) return true;
 
-  // for( const keyword of keywords){
-  //     if(keywordsMap[keyword] === undefined){
-  //         keywordsMap[keyword] = null
-  //     }
-  // }
+    const MAX_PATH = 260;
+    //Obtem o nome do processo
+    const processNameBuffer = Buffer.alloc(MAX_PATH);
+    psapi.GetModuleBaseNameA(
+      processHandle,
+      null,
+      processNameBuffer,
+      MAX_PATH
+    );
+    const process = processNameBuffer
+      .toString()
+      .replace(/\0/g, '')
+      .toLowerCase();
 
-  for (const keyProcess in keywordsMap) {
-    allProcesses.push(keyProcess);
+    if (process.endsWith('.exe')) {
+      MAPPROCESSES.set(process, pid);
+    }
+
+    return true;
   }
+);
 
-  return allProcesses;
+const collectProcesses = async () => {
+  console.time('time');
+  user32.EnumWindows(windowProc, 0);
+  const processes = [...MAPPROCESSES.keys()];
+  console.timeEnd('time');
+  return processes;
 };
 
 export default collectProcesses;
