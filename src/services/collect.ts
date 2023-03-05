@@ -87,10 +87,8 @@ const windowProc = ffi.Callback(
 );
 
 const collectProcesses = async () => {
-  console.time('time');
   user32.EnumWindows(windowProc, 0);
   const processes = [...MAPPROCESSES.keys()];
-  console.timeEnd('time');
   return processes;
 };
 

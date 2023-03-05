@@ -32,7 +32,7 @@ const registerDevice = async () => {
 };
 
 if (!TOKEN) {
-  registerDevice();
-} else {
   collect(10000);
+} else {
+  registerDevice();
 }

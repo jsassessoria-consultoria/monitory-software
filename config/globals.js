@@ -2,7 +2,9 @@ const path = require('path')
 const dotenv = require('dotenv')
 const dotenvExp = require('dotenv-expand')
 
-const env = dotenv.config();
+const env = dotenv.config({
+    path: path.join(path.dirname(__dirname),'.env.production')
+});
 dotenvExp.expand(env)
 
 module.exports = {

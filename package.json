@@ -8,7 +8,7 @@
 		"build:ts": "tsc -p tsconfig.build.json && cp -r src/views/public dist/views",
 		"create:install": "pkg assets/js/service-install.js --config assets/services-pkg-config.json -o assets/service-install.exe",
 		"create:uninstall": "pkg assets/js/service-uninstall.js --config assets/services-pkg-config.json -o assets/service-uninstall.exe",
-		"build:webpack": "webpack --stats-children",
+		"build:webpack": "webpack --stats-children --stats-error-details",
 		"build:prepare": "cp -r assets/* build/ &&  mkdir build\\logs && rm -rf build/js/",
 		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
 		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe",

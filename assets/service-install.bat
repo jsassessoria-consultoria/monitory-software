@@ -8,16 +8,19 @@ SET APP_DIR=%ProgramData%\%APPLICATION_NAME%\
 SET NSSM="%APP_DIR%\nssm\nssm.exe"
 
 if "%1" == "" (
+    ECHO missing APPLICATION_NAME
     ECHO usage: %~nx0 APPLICATION_NAME SERVICE_NAME LOCAL_URL
     exit /b 1
 )
 
 if "%2" == "" (
+    ECHO missing SERVICE_NAME
     ECHO usage: %~nx0 APPLICATION_NAME SERVICE_NAME LOCAL_URL
     exit /b 1
 )
 
 if "%3" == "" (
+    ECHO missing LOCAL_URL
     ECHO usage: %~nx0 APPLICATION_NAME SERVICE_NAME LOCAL_URL
     exit /b 1
 )
