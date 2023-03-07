@@ -2,8 +2,10 @@ import express from 'express';
 import path from 'path';
 import os from 'node:os';
 import axios from 'axios';
+import logger from '../config/logger';
 
 let USER_TOKEN = null;
+let isServerUp = false;
 
 type RegisterBody = {
   deviceName: string;
@@ -19,7 +21,6 @@ const start = (PORT: number, API_URL: string) => {
     currentFolder,
     'public'
   );
-  console.log(relativeViewFolder);
 
   app.use(express.static(relativeViewFolder));
   app.use(express.json());
@@ -75,20 +76,21 @@ const start = (PORT: number, API_URL: string) => {
     }
   });
 
-  const server = app.listen(PORT || 4000, () =>
-    console.log(`Server is running at ${PORT}`)
-  );
+  const server = app.listen(PORT || 4000, () => {
+    logger.info(`Server is running at ${PORT}`);
+    isServerUp = true;
+  });
 
   const closeServer = () => {
-    setTimeout(() => {
-      server.closeAllConnections();
-      server.close(() => {
-        console.log('Servidor local desconectado');
-      });
-    }, 2000);
+    server.closeAllConnections();
+    server.close(() => {
+      logger.info('Servidor local desconectado');
+      isServerUp = false;
+    });
   };
 };
 export const server = {
   start,
-  token: () => USER_TOKEN
+  token: () => USER_TOKEN,
+  isServerUp: () => isServerUp
 };

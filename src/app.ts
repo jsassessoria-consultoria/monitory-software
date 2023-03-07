@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
+const env = dotenv.config();
+dotenvExpand.expand(env);
+
 import open from 'open';
 import collect from './monitoring/collectAndSend';
 import { server } from './views/server';
-
-const env = dotenv.config();
-dotenvExpand.expand(env);
 
 const PORT = +process.env.PORT;
 const LOCAL_URL = process.env.LOCAL_URL;
@@ -13,26 +13,21 @@ const LOCAL_URL = process.env.LOCAL_URL;
 //url da API do backend do ODS SAURON
 const _API_URL = process.env.API_URL;
 
-let TOKEN = null;
+let TOKEN: string | null = null;
 
-const registerDevice = async () => {
-  server.start(PORT, _API_URL);
-
-  if (process.env.NODE_ENV === 'dev') {
-    await open(LOCAL_URL);
-  }
-
-  const checkToken = setInterval(() => {
+const createLoop = (timer: number) => {
+  setTimeout(async () => {
     TOKEN = server.token();
-    if (TOKEN) {
-      collect(10000);
-      clearInterval(checkToken);
+    if (!TOKEN && !server.isServerUp()) {
+      server.start(PORT, _API_URL);
+      await open(LOCAL_URL);
+    } else if (TOKEN) {
+      await collect();
+      return createLoop(10000);
     }
-  }, 1000);
+
+    createLoop(timer);
+  }, timer);
 };
 
-if (!TOKEN) {
-  collect(10000);
-} else {
-  registerDevice();
-}
+createLoop(1000);

@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!-- Define the ODSSauron task schedule -->
+<Task xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+    <RegistrationInfo>
+        <Author>ODSSauron Team</Author>
+        <Version>1.0.0</Version>
+        <Description>Start the ODSSauron collect application</Description>
+    </RegistrationInfo>
+    <Triggers>
+        <LogonTrigger>
+            <Enabled>true</Enabled>
+        </LogonTrigger>
+    </Triggers>
+    <Principals>
+      <Principal>
+        <RunLevel>HighestAvailable</RunLevel>
+      </Principal>
+    </Principals>
+    <Settings>
+      <AllowStartOnDemand>true</AllowStartOnDemand>
+      <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>
+      <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+      <Enabled>true</Enabled>
+      <Hidden>true</Hidden>
+      <IdleSettings>
+        <StopOnIdleEnd>false</StopOnIdleEnd>
+        <RestartOnIdle>false</RestartOnIdle>
+      </IdleSettings>
+      <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>
+      <RunOnlyIfIdle>false</RunOnlyIfIdle>
+      <RunOnlyIfNetworkAvailable>false</RunOnlyIfNetworkAvailable>
+      <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>
+      <StartWhenAvailable>true</StartWhenAvailable>
+      <WakeToRun>false</WakeToRun>
+      <Priority>7</Priority>
+  
+    </Settings>
+    <Actions>
+        <Exec>
+            <Command>C:\ProgramData\ODSSauron\build.exe</Command>
+        </Exec>
+    </Actions>
+</Task>

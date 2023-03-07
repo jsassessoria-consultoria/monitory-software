@@ -1,14 +1,17 @@
 import collectProcesses from '../services/collect';
 import { sendProcesses } from '../api/process';
+import logger from '../config/logger';
 
 //TODO: recolocar a request
-const collect = (timer: number) => {
-  setTimeout(async () => {
+const collect = async () => {
+  try {
     const processes = await collectProcesses();
-    console.log(processes);
+    logger.verbose(processes);
+    logger.info('Data collected');
     await sendProcesses(processes);
-    collect(timer);
-  }, timer);
+  } catch (e) {
+    logger.error('Could not collect or send data');
+  }
 };
 
 export default collect;

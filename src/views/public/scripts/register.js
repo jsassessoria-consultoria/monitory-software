@@ -58,7 +58,6 @@ const registerDone = () => {
 
 const closeServer = async () => {
     await axios.post(_URL.concat('close'), {});
-    window.close();
 }
 
 const sendData = async(data) => {
@@ -66,8 +65,9 @@ const sendData = async(data) => {
         await axios.post(_URL.concat('register'),data)
         console.log('Request sended')
         registerDone()
+        closeServer()
         setTimeout(() => {
-            closeServer()
+            window.close();
         },10000)
     }catch(e){
         console.log(e)

@@ -31,10 +31,10 @@ async function extractZip(){
 }
 
 function installService(){
-    console.log('Iniciando o serviço...')
+    console.log('Iniciando o task...')
     return new Promise((resolve, reject) => {
         const executable = spawn(`cd ${globals.__deployAbsolutePath()} && cmd.exe`, ['/c',
-        'service-install.exe',
+        'task-install.exe',
         ], { shell: 'cmd.exe'})
 
         executable.stdout.on('data', (data) => {
@@ -43,7 +43,7 @@ function installService(){
        })
    
        executable.stderr.on('data', (e) => {
-           console.log('Erro na desinstalação do serviço', String(e))
+           console.log('Erro na instalação da task', String(e))
            reject(e)
        })
     })

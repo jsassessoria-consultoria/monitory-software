@@ -3,7 +3,8 @@
         "scripts": [
             "../config/globals.js"
         ],
-        "assets": ["public/",
+        "assets": [
+        "public/",
         "../node_modules/ffi-napi",
         "../node_modules/ref-napi"
         ],
