@@ -3,9 +3,9 @@ import dotenvExpand from 'dotenv-expand';
 const env = dotenv.config();
 dotenvExpand.expand(env);
 
-import open from 'open';
 import collect from './monitoring/collectAndSend';
 import { server } from './views/server';
+import open from './services/open';
 
 const PORT = +process.env.PORT;
 const LOCAL_URL = process.env.LOCAL_URL;
@@ -20,12 +20,11 @@ const createLoop = (timer: number) => {
     TOKEN = server.token();
     if (!TOKEN && !server.isServerUp()) {
       server.start(PORT, _API_URL);
-      await open(LOCAL_URL);
+      open(LOCAL_URL);
     } else if (TOKEN) {
       await collect();
       return createLoop(10000);
     }
-
     createLoop(timer);
   }, timer);
 };

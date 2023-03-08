@@ -13,7 +13,7 @@
 		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe && create-nodew-exe build/build.exe build/build.exe ",
 		"deploy:zip": "node assets/js/compress.js",
 		"deploy:exe": "pkg assets/js/decompress.js --config ./assets/deploy-pkg-config.json --output ods_sauron_sftw.exe",
-		"deploy:remove-unnecessary": "rm -rf build/bundle-pkg-config.json build/tasks-pkg-config.json build/bundle.js",
+		"deploy:remove-unnecessary": "rm -rf build/*.json",
 		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:remove-unnecessary && npm run deploy:zip && npm run deploy:exe",
 		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
@@ -68,8 +68,8 @@
 		"dotenv-webpack": "^8.0.1",
 		"express": "^4.18.2",
 		"ffi-napi": "^4.0.3",
-		"open": "^8.4.1",
 		"ref-napi": "^3.0.3",
+		"windows-scheduler": "^1.0.1",
 		"winston": "^3.8.2"
 	}
 }
