@@ -4,9 +4,7 @@
             "../config/globals.js"
         ],
         "assets": [
-        "public/",
-        "../node_modules/ffi-napi",
-        "../node_modules/ref-napi"
+            "../.env.production"
         ],
         "targets": ["node14-win-x64"]
     }

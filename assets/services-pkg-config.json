@@ -1,6 +1,0 @@
-{
-    "pkg": {
-        "scripts": "./config/*.js",
-        "targets": ["node14-win-x64"]
-    }
-}

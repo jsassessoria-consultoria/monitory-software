@@ -2,19 +2,18 @@
 	"name": "ods-sauron",
 	"version": "0.0.1",
 	"description": "",
-	"bin": "assets/js/decompress.js",
 	"scripts": {
-		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/service-uninstall.exe  assets/service-install.exe",
+		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/task-uninstall.exe  assets/task-install.exe",
 		"build:ts": "tsc -p tsconfig.build.json && cp -r src/views/public dist/views",
-		"create:install": "pkg assets/js/service-install.js --config assets/services-pkg-config.json -o assets/service-install.exe",
-		"create:uninstall": "pkg assets/js/service-uninstall.js --config assets/services-pkg-config.json -o assets/service-uninstall.exe",
-		"build:webpack": "webpack --stats-children",
-		"build:prepare": "cp -r assets/* build/ &&  mkdir build\\logs && rm -rf build/js/",
+		"create:install": "pkg assets/js/task-install.js --config assets/tasks-pkg-config.json -o assets/task-install.exe",
+		"create:uninstall": "pkg assets/js/task-uninstall.js --config assets/tasks-pkg-config.json -o assets/task-uninstall.exe",
+		"build:webpack": "webpack --stats-children --stats-error-details",
+		"build:prepare": "cp -r assets/* build/ && rm -rf build/js/",
 		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
-		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe",
+		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe && create-nodew-exe build/build.exe build/build.exe ",
 		"deploy:zip": "node assets/js/compress.js",
-		"deploy:exe": "pkg . --output ods_sauron_sftw.exe",
-		"deploy:remove-unnecessary": "rm -rf build/bundle-pkg-config.json build/services-pkg-config.json",
+		"deploy:exe": "pkg assets/js/decompress.js --config ./assets/deploy-pkg-config.json --output ods_sauron_sftw.exe",
+		"deploy:remove-unnecessary": "rm -rf build/*.json",
 		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:remove-unnecessary && npm run deploy:zip && npm run deploy:exe",
 		"start": "node dist/app.js",
 		"start:dev": "nodemon src/app.ts",
@@ -23,18 +22,6 @@
 		"lint:staged": "lint-staged",
 		"dev:start": "nodemon src/app.ts",
 		"prepare": "husky install"
-	},
-	"pkg": {
-		"scripts": [
-			"assets/js/decompress.js",
-			"./config/*.js"
-		],
-		"assets": [
-			"assets/build.zip"
-		],
-		"targets": [
-			"node14-win-x64"
-		]
 	},
 	"lint-staged": {
 		"**/*.{ts}": [
@@ -46,13 +33,16 @@
 		"@babel/cli": "^7.20.7",
 		"@babel/core": "^7.20.12",
 		"@babel/preset-env": "^7.20.2",
+		"@types/axios": "^0.14.0",
 		"@types/express": "^4.17.17",
 		"@types/ffi-napi": "^4.0.7",
 		"@types/jest": "^29.2.3",
+		"@types/open": "^6.2.1",
 		"@types/ref-napi": "^3.0.7",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
 		"copy-webpack-plugin": "^11.0.0",
+		"create-nodew-exe": "^1.0.10",
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -78,7 +68,8 @@
 		"dotenv-webpack": "^8.0.1",
 		"express": "^4.18.2",
 		"ffi-napi": "^4.0.3",
-		"open": "^8.4.1",
-		"ref-napi": "^3.0.3"
+		"ref-napi": "^3.0.3",
+		"windows-scheduler": "^1.0.1",
+		"winston": "^3.8.2"
 	}
 }

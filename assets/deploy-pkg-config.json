@@ -1,0 +1,14 @@
+{
+    "pkg": {
+		"scripts": [
+			"./js/decompress.js",
+			"../config/*.js"
+		],
+		"assets": [
+			"./build.zip"
+		],
+		"targets": [
+			"node14-win-x64"
+		]
+	}
+}

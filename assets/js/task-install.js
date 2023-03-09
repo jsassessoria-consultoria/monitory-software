@@ -4,7 +4,7 @@ const globals = require('../../config/globals')
 function installService(){
     return new Promise((resolve, reject) => {
             const install = spawn(`cd ${globals.__deployAbsolutePath()} && cmd.exe`, ['/c',
-             'service-install.bat',
+             'task-install.bat',
              globals.__appName,
              globals.__serviceName,
              globals.__local_url()
@@ -15,9 +15,8 @@ function installService(){
             })
         
             install.stderr.on('data', (e) => {
-                console.log('Erro na instalação do serviço', String(e))
+                console.log('Erro na criação da task', String(e))
                 reject(e)
-
             })
     })
 }

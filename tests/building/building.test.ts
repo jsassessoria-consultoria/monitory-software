@@ -22,10 +22,10 @@ describe('Fase 1 - Building', () => {
     expect(existFile).toBe(true);
   });
 
-  it('Should create service-install.exe inside assets/', async () => {
+  it('Should create task-install.exe inside assets/', async () => {
     const buildPath = path.join(
       process.cwd(),
-      'assets/service-install.exe'
+      'assets/task-install.exe'
     );
 
     await executor('npm run create:install');
@@ -34,10 +34,10 @@ describe('Fase 1 - Building', () => {
     expect(existFile).toBe(true);
   });
 
-  it('Should create service-uninstall.exe inside assets/', async () => {
+  it('Should create task-uninstall.exe inside assets/', async () => {
     const buildPath = path.join(
       process.cwd(),
-      'assets/service-uninstall.exe'
+      'assets/task-uninstall.exe'
     );
 
     await executor('npm run create:uninstall');
