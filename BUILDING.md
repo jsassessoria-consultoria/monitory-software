@@ -18,7 +18,7 @@ Mas para o deploy, iremos dividir a nossa base de código em duas partes:
     
 - Códigos da aplicação
     
-    Todos os códigos que tem como objetivo ser o software que irão ser acionados pelo serviço.
+    Todos os códigos que tem como objetivo ser o software que irão ser acionados pelo task.
     
 
 ---
@@ -53,11 +53,11 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 
 - São copiados os arquivos estáticos da pasta `views/public` como: `*.html`, `*.css` e `.js` para dentro da pasta `dist/views` 
     
-- Cria o `service-install.exe` e `service-uninstall.exe` dentro de **assets/**
-    - Através do pacote `pkg` é possível criar executáveis através de scripts, então é criado um executável através do script `service-install.js` e outro de `service-uninstall.js`  que estão em `assets/js/`
+- Cria o `task-install.exe` e `task-uninstall.exe` dentro de **assets/**
+    - Através do pacote `pkg` é possível criar executáveis através de scripts, então é criado um executável através do script `task-install.js` e outro de `task-uninstall.js`  que estão em `assets/js/`
     - Esses scripts são responsáveis por chamar por `cmd` do windows os arquivos `.bat`
     - Esses executáveis só serão acionados após a instalação de arquivos na máquina do cliente.
-    - Antes do `pkg` empacotar cada script, ele usa o `services-pkg-config.json` para definir configurações, veja configurações abaixo
+    - Antes do `pkg` empacotar cada script, ele usa o `tasks-pkg-config.json` para definir configurações, veja configurações abaixo
         
         ```bash
         {
@@ -68,8 +68,8 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
         }
         ```
         
-        - Basicamente, ao empacotar, ele empacota tanto o arquivo js: `service-installer.js` ou `service-uninstall.js`  mas também o arquivo de configuração definido em `config/`
-        - Esse arquivo de configuração é importante para definir o nome das variáveis globais, como: **Nome do serviço**, **nome da aplicação, local absoluto da aplicação em desenvolvimento, local absoluto da aplicação no deploy, etc…**
+        - Basicamente, ao empacotar, ele empacota tanto o arquivo js: `task-installer.js` ou `task-uninstall.js`  mas também o arquivo de configuração definido em `config/`
+        - Esse arquivo de configuração é importante para definir o nome das variáveis globais, como: **Nome do task**, **nome da aplicação, local absoluto da aplicação em desenvolvimento, local absoluto da aplicação no deploy, etc…**
 - `webpack.config.js` é acionado para realizar o bundle do código da aplicação
     - O bundle do webpack cria em um arquivo só, toda a nossa aplicação. Ou seja, todos os `imports` que contém dentro do arquivo de inicialização da aplicação são literalmente importados para dentro de um arquivo. Contendo tudo que seja necessário para aquele arquivo rodar dentro dele mesmo.
     - O webpack irá criar uma pasta chamada `build/` na pasta raiz do projeto, contendo o arquivo de bundle: `bundle.js` e um arquivo de licença do próprio webpack
@@ -93,7 +93,7 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
 - Cria o `build.exe`
     - O arquivo bundle.js que foi criado pelo webpack agora é empacotado em uma aplicação node através do `pkg` , para que não seja necessário ter o node instalado na máquina do usuário para rodar nossa aplicação.
     - Criará um arquivo chamado `build.exe` dentro da pasta `build/`
-    - Removerá alguns arquivos desnecessários como: `services-pkg-config.json` e `bundle-pkg-config.json`, usados somente para configurar o executável criado, e agora sem mais utilidade para o deploy
+    - Removerá alguns arquivos desnecessários como: `tasks-pkg-config.json` e `bundle-pkg-config.json`, usados somente para configurar o executável criado, e agora sem mais utilidade para o deploy
 
 ## 📦 Fase de preparação para o deploy - Empacotando a aplicação
 
@@ -150,17 +150,17 @@ Para o deploy, é aplicado um passo-a-passo simples com a seguinte ordem:
     
     É exatamente isso que estamos fazendo agora, atraves do decompress.js ele irá chamar uma função que irá extrair o arquivo `build.zip` , que contém antiga pasta `build/` para dentro de `C:\ProgramData\<nomeDaAplicação>`.
     
-- Instalação do serviço
+- Instalação do task
     
-    Após extrair a pasta, o caminho `C:\ProgramData\<nomeDaAplicação>\` estará com os nossos executáveis que instalam o serviço, e o executável do script da nossa aplicação.
+    Após extrair a pasta, o caminho `C:\ProgramData\<nomeDaAplicação>\` estará com os nossos executáveis que instalam o task, e o executável do script da nossa aplicação.
     
-    Portando ainda, através do `decompress.js` o executável de instalação de serviço é chamado através do terminal `cmd` e o serviço é instalado na máquina do usuário
+    Portando ainda, através do `decompress.js` o executável de instalação de task é chamado através do terminal `cmd` e o task é instalado na máquina do usuário
     
     <aside>
-    💡 Lembrando que ao instalar o serviço, o serviço irá procurar por um arquivo `build.exe` que é o arquivo da nossa aplicação empactado. Ou seja, ao iniciar, o serviço irá executar esse script em background
+    💡 Lembrando que ao instalar o task, o task irá procurar por um arquivo `build.exe` que é o arquivo da nossa aplicação empactado. Ou seja, ao iniciar, o task irá executar esse script em background
     
     </aside>
     
-- Bônus: Desinstalação de serviço
+- Bônus: Desinstalação de task
     
-    Na pasta descompactada, também terá um arquivo chamado `service-unistall.exe` , esse arquivo tem como função remover a serviço criado. Ele não é executado pelo código, mas caso necessite desinstalar, basta executar direto da pasta.
+    Na pasta descompactada, também terá um arquivo chamado `task-unistall.exe` , esse arquivo tem como função remover a task criado. Ele não é executado pelo código, mas caso necessite desinstalar, basta executar direto da pasta.

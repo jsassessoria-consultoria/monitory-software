@@ -35,5 +35,3 @@ schtasks /create /xml %APP_DIR%\task.xml /tn %TASK_NAME%
 
 ECHO INICIANDO INICIAR A TASK %TASK_NAME%
 schtasks /run /tn %TASK_NAME%
-
-@REM START %LOCAL_URL%
