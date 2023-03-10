@@ -4,8 +4,11 @@ const globals = require('../../config/globals')
 function uninstallService(){
     return new Promise((resolve, reject) => {
         const uninstall = spawn(`cd ${globals.__deployAbsolutePath()} && cmd.exe`, ['/c',
-        'service-uninstall.bat',
-        globals.__serviceName,
+            'schtasks',
+            '/delete',
+            '/tn',
+            globals.__serviceName,
+            '/f'
         ], { shell: 'cmd.exe'})
 
        uninstall.stdout.on('data', (data) => {
@@ -14,8 +17,8 @@ function uninstallService(){
        })
    
        uninstall.stderr.on('data', (e) => {
-           console.log('Erro na desinstalação do serviço', String(e))
-           reject(e)
+        console.log('Erro na desinstalação do serviço', String(e))
+        reject(e)
        })
     })
 }
