@@ -25,7 +25,6 @@ jobs:
         uses: SpicyPizza/create-envfile@v1
         with:
           envkey_PORT: 5000
-          envkey_NODE_ENV:  production
           envkey_API_URL: http://localhost:4000
           envkey_LOCAL_URL: http://localhost:5000/
           file_name: .env
