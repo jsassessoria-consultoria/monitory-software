@@ -4,37 +4,46 @@ name: Release
 # Evento que ativa a action
 on:
   push:
-    tags: 
-      - v*
+    tags:
+     - v*
 
 
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     permissions:
         contents: write
+
     steps:
 
       # Faz o checkout para a máquina no github
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      
+      # Baixa o node no ambiente
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
       # Gera o arquivo .env
       - name: Create .env
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          envkey_PORT: 5000
-          envkey_NODE_ENV:  production
-          envkey_API_URL: http://localhost:4000
-          envkey_LOCAL_URL: http://localhost:5000/
-          file_name: .env.production
-          fail_on_empty: true
+        run: |
+          touch .env
+          echo PORT="5000" >> .env
+          echo API_URL="http://localhost:4000" >> .env
+          echo LOCAL_URL="http://localhost:5000/" >> .env
+          cat .env
+
+      # Instala as dependências
+      - name: Generate .exe file
+        run: npm install
+        shell: pwsh 
 
       # Gera o arquivo .exe na máquina do github
       - name: Generate .exe file
-        run: npm i && npm run deploy:start
-        shell: bash 
+        run: npm run deploy:start
+        shell: pwsh 
 
       # Faz o upload do arquivo .exe da máquina do github para o github
       - name: Upload .exe file to Github
@@ -70,7 +79,3 @@ jobs:
           asset_path: ods_sauron_sftw.exe
           asset_name: ods_sauron_sftw.exe
           asset_content_type: application/octet-stream
-
-
-
-    
