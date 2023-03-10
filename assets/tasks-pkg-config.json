@@ -1,10 +1,10 @@
 {
     "pkg": {
         "scripts": [
-            "../config/globals.js"
+            "../config/*.js"
         ],
         "assets": [
-            "../.env.production"
+            "../.env"
         ],
         "targets": ["node14-win-x64"]
     }

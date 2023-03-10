@@ -28,7 +28,7 @@ jobs:
           envkey_NODE_ENV:  production
           envkey_API_URL: http://localhost:4000
           envkey_LOCAL_URL: http://localhost:5000/
-          file_name: .env.production
+          file_name: .env
           fail_on_empty: true
 
       # Gera o arquivo .exe na máquina do github

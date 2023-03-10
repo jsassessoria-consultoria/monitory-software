@@ -30,7 +30,7 @@ module.exports = {
       },
       plugins: [
         new Dotenv({
-          path:"./.env.production",
+          path:"./.env",
           expand: true
         }),
         new CopyWebpackPlugin({
