@@ -3,6 +3,7 @@
 		"scripts": [
 			"./js/decompress.js",
 			"../config/*.js"
+
 		],
 		"assets": [
 			"./build.zip"
