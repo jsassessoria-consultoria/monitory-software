@@ -18,13 +18,13 @@ let TOKEN: string | null = null;
 const createLoop = (timer: number) => {
   setTimeout(async () => {
     TOKEN = server.token();
-    if (!TOKEN && !server.isServerUp()) {
-      server.start(PORT, _API_URL);
-      open(LOCAL_URL);
-    } else if (TOKEN) {
-      await collect();
-      return createLoop(10000);
-    }
+    await collect();
+    // if (!TOKEN && !server.isServerUp()) {
+    //   server.start(PORT, _API_URL);
+    //   open(LOCAL_URL);
+    // } else if (TOKEN) {
+    //   return createLoop(10000);
+    // }
     createLoop(timer);
   }, timer);
 };
