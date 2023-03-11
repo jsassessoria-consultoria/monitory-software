@@ -5,7 +5,6 @@ SET TASK_NAME=%2
 SET LOCAL_URL=%3
 
 SET APP_DIR=%ProgramData%\%APPLICATION_NAME%\
-SET NSSM="%APP_DIR%\nssm\nssm.exe"
 
 if "%1" == "" (
     ECHO missing APPLICATION_NAME

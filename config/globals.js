@@ -1,11 +1,6 @@
 const path = require('path')
-const dotenv = require('dotenv')
-const dotenvExp = require('dotenv-expand')
-
-const env = dotenv.config({
-    path: path.join(path.dirname(__dirname),'.env.production')
-});
-dotenvExp.expand(env)
+const {setEnv} = require('./dotenv')
+setEnv();
 
 module.exports = {
     __appName: 'ODSSauron',

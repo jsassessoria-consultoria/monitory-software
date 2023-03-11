@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
-const env = dotenv.config();
-dotenvExpand.expand(env);
+import { setEnv } from '../config/dotenv';
+setEnv();
 
 import collect from './monitoring/collectAndSend';
 import { server } from './views/server';

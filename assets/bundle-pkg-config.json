@@ -1,7 +1,7 @@
 {
     "pkg": {
         "scripts": [
-            "../config/globals.js"
+            "../config/*.js"
         ],
         "assets": [
         "public/",
