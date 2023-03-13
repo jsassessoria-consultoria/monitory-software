@@ -1,0 +1,12 @@
+explorer.exe
+zoom.exe
+mintty.exe
+code.exe
+msedge.exe
+textinputhost.exe
+explorer.exe
+zoom.exe
+mintty.exe
+code.exe
+msedge.exe
+textinputhost.exe
