@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "",
 	"scripts": {
-		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/task-uninstall.exe  assets/task-install.exe",
+		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/task-uninstall.exe  assets/task-install.exe tmp/",
 		"build:ts": "tsc -p tsconfig.build.json && cp -r src/views/public dist/views",
 		"create:install": "pkg assets/js/task-install.js --config assets/tasks-pkg-config.json -o assets/task-install.exe",
 		"create:uninstall": "pkg assets/js/task-uninstall.js --config assets/tasks-pkg-config.json -o assets/task-uninstall.exe",
@@ -37,6 +37,7 @@
 		"@types/express": "^4.17.17",
 		"@types/ffi-napi": "^4.0.7",
 		"@types/jest": "^29.2.3",
+		"@types/node-cron": "^3.0.7",
 		"@types/open": "^6.2.1",
 		"@types/ref-napi": "^3.0.7",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
@@ -68,6 +69,7 @@
 		"dotenv-webpack": "^8.0.1",
 		"express": "^4.18.2",
 		"ffi-napi": "^4.0.3",
+		"node-cron": "^3.0.2",
 		"ref-napi": "^3.0.3",
 		"windows-scheduler": "^1.0.1",
 		"winston": "^3.8.2"

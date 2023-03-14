@@ -3,6 +3,8 @@
 
 import ffi from 'ffi-napi';
 import ref from 'ref-napi';
+import logger from '../config/logger';
+import { error } from '../handlers/errorHandler';
 
 const getWindowsProcesses: Promise<string[]> = () => {
   return new Promise((resolve, reject) => {
@@ -102,9 +104,13 @@ const getWindowsProcesses: Promise<string[]> = () => {
 const collectProcesses = async () => {
   try {
     const processes = await getWindowsProcesses();
+
+    logger.info('Data Collected');
+    logger.verbose(processes);
+
     return processes;
   } catch (e) {
-    console.log(e);
+    error.COLLECT_DATA(e);
   }
 };
 
