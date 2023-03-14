@@ -1,16 +1,17 @@
-import collectProcesses from '../services/collect';
 import { sendProcesses } from '../api/process';
-import logger from '../config/logger';
+import { error } from '../handlers/errorHandler';
+import writeBackupFilePath from '../services/write';
+import collectProcesses from '../services/collect';
 
-//TODO: recolocar a request
 const collect = async () => {
+  let processes = [];
   try {
-    const processes = await collectProcesses();
-    logger.verbose(processes);
-    logger.info('Data collected');
+    processes = await collectProcesses();
+    if (processes.length === 0) return error.COLLECT_DATA_EMPTY();
     await sendProcesses(processes);
-  } catch (e) {
-    logger.error('Could not collect or send data');
+  } catch (requestError) {
+    writeBackupFilePath(processes);
+    error.COLLECT_SEND(requestError);
   }
 };
 
