@@ -1,3 +1,4 @@
+import { IProcessByDay } from '../services/read';
 import instance from './axios';
 
 const sendProcesses = async (processes: string[]) => {
@@ -6,4 +7,8 @@ const sendProcesses = async (processes: string[]) => {
   });
 };
 
-export { sendProcesses };
+const sendLostProcesses = async (processesByDay: IProcessByDay) => {
+  await instance.post('/recover', processesByDay);
+};
+
+export { sendProcesses, sendLostProcesses };
