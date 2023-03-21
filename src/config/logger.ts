@@ -1,6 +1,6 @@
-import winston, { level, verbose } from 'winston';
+import winston from 'winston';
 import path from 'path';
-import globals from '../../config/globals';
+import globals from './paths';
 
 const logger = winston.createLogger({
   level: 'verbose',
@@ -14,6 +14,7 @@ const logger = winston.createLogger({
 });
 
 if (process.env.NODE_ENV !== 'dev') {
+  console.log(globals.__deployAbsolutePath());
   logger.add(
     new winston.transports.File({
       filename: path.join(

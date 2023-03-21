@@ -37,7 +37,7 @@
     </Settings>
     <Actions>
         <Exec>
-            <Command>C:\ProgramData\ODSSauron\build.exe</Command>
+            <Command>%PROGRAMFILES%\ODSSauron\ODSSauron.exe</Command>
         </Exec>
     </Actions>
 </Task>

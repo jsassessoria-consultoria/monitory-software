@@ -1,9 +1,14 @@
+import { IGeolocation } from '../services/geolocation';
 import { IProcessByDay } from '../services/read';
 import instance from './axios';
 
-const sendProcesses = async (processes: string[]) => {
+const sendProcesses = async (
+  processes: string[],
+  geolocation: IGeolocation
+) => {
   await instance.post('/collect', {
-    processes: processes
+    processes: processes,
+    geolocation: geolocation
   });
 };
 

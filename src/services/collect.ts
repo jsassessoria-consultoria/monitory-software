@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
 
-import ffi from 'ffi-napi';
-import ref from 'ref-napi';
+import ffi from '@lwahonen/ffi-napi';
+import ref from '@lwahonen/ref-napi';
 import logger from '../config/logger';
 import { error } from '../handlers/errorHandler';
 
-const getWindowsProcesses: Promise<string[]> = () => {
+const getWindowsProcesses = () => {
   return new Promise((resolve, reject) => {
     const Library = ffi.Library;
     /**
@@ -15,7 +15,7 @@ const getWindowsProcesses: Promise<string[]> = () => {
      */
 
     const user32 = new Library('user32.dll', {
-      EnumWindows: ['bool', ['pointer', 'int32']],
+      EnumWindows: [ref.types.int, ['pointer', 'int32']],
       GetWindowTextA: ['long', ['long', 'char *', 'long']],
       IsWindowVisible: ['bool', ['int32']],
       GetWindowThreadProcessId: ['long', ['int32', 'pointer']]
@@ -49,14 +49,14 @@ const getWindowsProcesses: Promise<string[]> = () => {
      * Callback da função EnumWindows
      */
     const windowProc = ffi.Callback(
-      'bool',
+      ref.types.int,
       ['long', 'int32'],
       function (hwnd, lParam) {
         const PROCESS_QUERY_INFORMATION = 0x0400;
         const PROCESS_VM_READ = 0x0010;
 
         //Verifica se tem tela visível
-        if (!user32.IsWindowVisible(hwnd)) return true;
+        if (!user32.IsWindowVisible(hwnd)) return 1;
 
         //Recupera o PID pela janela
         const pidBuf = Buffer.alloc(10);
@@ -69,7 +69,7 @@ const getWindowsProcesses: Promise<string[]> = () => {
           false,
           pid
         );
-        if (processHandle.isNull()) return true;
+        if (processHandle.isNull()) return 1;
 
         const MAX_PATH = 260;
         //Obtem o nome do processo
@@ -89,22 +89,22 @@ const getWindowsProcesses: Promise<string[]> = () => {
           MAPPROCESSES.set(process, pid);
         }
 
-        return true;
+        return 1;
       }
     );
 
     user32.EnumWindows.async(windowProc, 0, (error, value) => {
       if (error) reject(error);
-      const processes: string[] = [...MAPPROCESSES.keys()];
+      const processes = [...MAPPROCESSES.keys()];
       resolve(processes);
     });
   });
 };
 
-const collectProcesses = async () => {
+const collectProcesses = async (): Promise<string[]> => {
   try {
-    const processes = await getWindowsProcesses();
-
+    const processes: string[] = await getWindowsProcesses();
+    console.log(processes);
     logger.info('Data Collected');
     logger.verbose(processes);
 
