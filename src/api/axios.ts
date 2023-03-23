@@ -1,9 +1,7 @@
 import axios from 'axios';
-import setEnv from '../config/dotenv';
-setEnv();
+import { tokenHandler } from '../handlers/tokenHandler';
 
 const URL = process.env.API_URL;
-
 const instance = axios.create({
   baseURL: URL
 });

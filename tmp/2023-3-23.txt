@@ -1,0 +1,16 @@
+explorer.exe
+textinputhost.exe
+lockapp.exe
+shellexperiencehost.exe
+searchapp.exe
+startmenuexperiencehost.exe
+mintty.exe
+systempropertiesadvanced.exe
+explorer.exe
+textinputhost.exe
+lockapp.exe
+shellexperiencehost.exe
+searchapp.exe
+startmenuexperiencehost.exe
+mintty.exe
+systempropertiesadvanced.exe

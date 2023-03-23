@@ -9,6 +9,8 @@ function createWindow(TOKEN: string) {
       nodeIntegration: true,
       preload: path.join(__dirname, './preloader.js')
     },
+    icon: path.join(path.dirname(__dirname), 'assets', 'icon.png'),
+    autoHideMenuBar: true,
     show: TOKEN ? false : true
   });
   if (TOKEN) {

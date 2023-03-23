@@ -4,20 +4,19 @@ setEnv();
 
 import callCron from './services/callCron';
 import createWindow from '../electron/window';
-import { createTokenVar } from './utils/setVariable';
+import { tokenHandler } from './handlers/tokenHandler';
 
-let TOKEN: string | undefined = process.env.ODS_SAURON_TOKEN;
 let mainWindow: BrowserWindow;
 app.whenReady().then(() => {
   ipcMain.handle('close', (event, token) => {
     if (token) {
-      TOKEN = token;
-      createTokenVar(token);
+      tokenHandler.setToken(token);
       mainWindow.hide();
       callCron();
     }
   });
-  if (process.platform === 'win32') mainWindow = createWindow(TOKEN);
+  if (process.platform === 'win32')
+    mainWindow = createWindow(tokenHandler.getToken());
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length > 1) app.quit();
