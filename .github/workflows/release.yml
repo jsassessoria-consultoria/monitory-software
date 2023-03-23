@@ -5,22 +5,19 @@ name: Release
 on:
   push:
     tags:
-     - v*
-
+      - v*
 
 jobs:
-
   build:
-    runs-on: windows-latest
+    runs-on: windows-2019
     permissions:
-        contents: write
+      contents: write
 
     steps:
-
       # Faz o checkout para a máquina no github
       - name: Checkout Code
         uses: actions/checkout@v3
-      
+
       # Baixa o node no ambiente
       - uses: actions/setup-node@v3
         with:
@@ -33,25 +30,65 @@ jobs:
           echo API_URL="http://localhost:4000" >> .env
           cat .env
 
+        # Instala o VS2019
+      - name: Install vs2019 Build Tools
+        run: choco install visualstudio2019buildtools
+        shell: pwsh
+
+        # Instala as ferramentas de compilação do C++ no VS2019
+      - name: Install vs2019 C++ Tools
+        run: choco install visualstudio2019-workload-vctools
+        shell: pwsh
+
+        # Instala o Windows SDK
+      - name: Install windows sdk
+        run: choco install windows-sdk-10-version-1809-all
+        shell: pwsh
+
+      # Copia o arquivo de compilaçao do assembly do VS2019 para a pasta do Windows SDK (local onde o NodeRT busca por esse arquivo)
+      - name: Copy Assembly File
+        run: Copy-Item -Path "$env:ProgramFiles (x86)/Microsoft Visual Studio/2019/BuildTools/VC/Tools/MSVC/14.29.30133/lib/x86/store/references/platform.winmd" -Destination "$env:ProgramFiles (x86)/Windows Kits/10/UnionMetadata/10.0.16299.0"
+        shell: pwsh
+
+      # Instala node-gyp
+      - name: Install node-gyp
+        run: npm i -g node-gyp
+        shell: pwsh
+
+      # Deleta pacotes do packgage.json ( pecisam ser instalado somente após o NodeRT buildar )
+      - name: Delete package that should be added before
+        run: npm pkg delete dependencies.@lwahonen/ffi-napi && npm pkg delete dependencies.@lwahonen/ref-napi
+        shell: pwsh
+
       # Instala as dependências
-      - name: Generate .exe file
-        run: npm install
-        shell: pwsh 
+      - name: Install dependencies
+        run: npm i --cache tmp/cache/empty
+        shell: pwsh
+
+      # Instala as dependências após a instalação e build do NodeRT
+      - name: Install native dependencies
+        run: npm install @lwahonen/ffi-napi @lwahonen/ref-napi
+        shell: pwsh
+
+      # Instala as dependências
+      - name: Rebuild the native dependencies
+        run: npm run rebuild
+        shell: pwsh
 
       # Gera o arquivo .exe na máquina do github
       - name: Generate .exe file
         run: npm run deploy:start
-        shell: pwsh 
+        shell: pwsh
 
       # Faz o upload do arquivo .exe da máquina do github para o github
       - name: Upload .exe file to Github
         uses: actions/upload-artifact@v2
         with:
-          name: ods_sauron_sftw
-          path: ods_sauron_sftw.exe
+          name: ODSSauron Setup 0.0.1.exe
+          path: build/ODSSauron Setup 0.0.1.exe
 
-      # Cria um changelog baseado nas PR´s 
-      - name: "Build Changelog"
+      # Cria um changelog baseado nas PR´s
+      - name: 'Build Changelog'
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v3
 
@@ -66,7 +103,7 @@ jobs:
           prerelease: false
           generate_release_notes: true
           body: ${{steps.build_changelog.outputs.changelog}}
-        
+
       # Adiciona o arquivo .exe do github na release
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
@@ -74,6 +111,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ods_sauron_sftw.exe
-          asset_name: ods_sauron_sftw.exe
+          asset_path: build/ODSSauron Setup 0.0.1.exe
+          asset_name: ODSSauron_Setup.exe
           asset_content_type: application/octet-stream
