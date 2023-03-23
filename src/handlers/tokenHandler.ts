@@ -9,7 +9,6 @@ class TokenHandler {
     if (process.env.ODS_SAURON_TOKEN) {
       this.token = process.env.ODS_SAURON_TOKEN;
     }
-    console.log(this.token);
     return this.token;
   };
 
