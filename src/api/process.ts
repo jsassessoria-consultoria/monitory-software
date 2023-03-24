@@ -22,7 +22,7 @@ const sendProcesses = async (
 };
 
 const sendLostProcesses = async (processesByDay: IProcessByDay) => {
-  await instance.post('/recover', processesByDay, {
+  await instance.post('/backup', processesByDay, {
     headers: {
       Authorization: `Bearer ${tokenHandler.getToken()}`
     }
