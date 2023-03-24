@@ -1,82 +1,25 @@
 # Tudo que precisa saber sobre o código de task
 
-Created time: January 30, 2023 10:52 AM
+# 👀 Detalhes
 
-# 👀 Tipo de arquivo
-
-> É um arquivo `.bat` que será executado no windows. Arquivos `.bat` funcionam através de processamentos em lotes, ou seja, realizam script individualmente, geralmente usados para comandos repetitivos.
-> 
+> Uma tarefa é criada no windows através do Agendador de tarefas do Windows, 
+> A tarefa é executada toda vez que um usuário faz Logon 
 
 ---
 
 # 💭 Funcionamento
 
-> Para rodar os scripts, abra o terminal de comando do windows `cmd` navegue até a pasta onde o arquivo se encontra e passe os seguintes parâmetros
-> 
+> Uma tarefa é apontada para um executável. Caso queira verificar as funções da tarefa, procure por `ODSSauron` no agendador de tarefas.
+> Ou consulte o `task.xml` em assets
 
-```js
-task-install.bat APPLICATION_NAME TASK_NAME LOCAL_URL
-```
+> A criação/verificação/execução da tarefas foi delegada para o  momento da instalação, passando a responsabilidade para o `NSIS` ( sistema de instalação criado pelo electron-builder)
 
-- **task-install.bat**: O nome arquivo do seu `.bat`
-- **APPLICATION_NAME**: O nome da aplicação desejada
-- **TASK_NAME**: O nome da task que você queira que seja exibido
-- **LOCAL_URL**: A URL que irá abrir a página de registro do dispositivo
+> O script customizado do NSIS passado para o electron-builder está localizado em `custom.nsh` em assets
 
-- Link de referência a criação de tarefas do windows:
-    - [Comandos schtasks (criação/deleção/pesquisa/execução de tarefas windows)](https://learn.microsoft.com/pt-br/windows-server/administration/windows-commands/schtasks)
+Resumidamente, o `custom.nsh` executa a seguinte análise:
 
----
-
-# 🛫 Código
-
-Código atual é este:
-
-```jsx
-@ECHO OFF
-
-SET APPLICATION_NAME=%1
-SET TASK_NAME=%2
-SET LOCAL_URL=%3
-
-SET APP_DIR=%ProgramData%\%APPLICATION_NAME%\
-SET NSSM="%APP_DIR%\nssm\nssm.exe"
-
-if "%1" == "" (
-    ECHO missing APPLICATION_NAME
-    ECHO usage: %~nx0 APPLICATION_NAME TASK_NAME LOCAL_URL
-    exit /b 1
-)
-
-if "%2" == "" (
-    ECHO missing TASK_NAME
-    ECHO usage: %~nx0 APPLICATION_NAME TASK_NAME LOCAL_URL
-    exit /b 1
-)
-
-if "%3" == "" (
-    ECHO missing LOCAL_URL
-    ECHO usage: %~nx0 APPLICATION_NAME TASK_NAME LOCAL_URL
-    exit /b 1
-)
-
-
-ECHO TENTATIVA DE PARAR E DELETAR A TASK %TASK_NAME%
-schtasks /delete /tn %TASK_NAME% /f || ECHO TASK INEXISTENTE
-
-
-ECHO TENTATIVA DE CRIAR A TASK %TASK_NAME%
-schtasks /create /xml %APP_DIR%\task.xml /tn %TASK_NAME%
-
-ECHO INICIANDO INICIAR A TASK %TASK_NAME%
-schtasks /run /tn %TASK_NAME%
-```
-
-Timeline:
-
-- `APPLICATION_NAME`, `TASK_NAME` e `LOCAL_URL` são variáveis que recebem valor através do comando externo passado pelo usuário
-- Define o diretório da aplicação como: `C:\ProgramData\<applicationName>`
-- Para a task (se existir)
-- Remove a task  (se existir)
-- Cria a task
-- Executa a task
+ | PreInit <br><sub>( antes de instalar )</sub>| customInstall  <br><sub>(momento da instalação)</sub> | customCheckAppRunning <br><sub>(verificar se a aplicação está rodando)</sub> | 
+| --------------------|---------------------|--------------------|
+| Define local de instalação na pasta `Arquivos de Programas/ODSSauron` | deleta a task `ODSSauron` |  No momento da desinstalação essa função é chamada e deleta todas as task com o nome `ODSSauron`
+|  | cria a task `ODSSauron` de acordo com o `task.xml` |   No momento da desinstalação essa função é chamada e para todos os processos com o nome `ODSSauron`|  
+|  |  executa a task `ODSSauron` |  Em caso de erro na desisntalação é pedido ao usuário uma nova tentatica

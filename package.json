@@ -1,27 +1,43 @@
 {
 	"name": "ods-sauron",
 	"version": "0.0.1",
-	"description": "",
+	"productName": "ODSSauron",
+	"description": "ODSSauron Monitory Application",
+	"author": "ODSSauron Team",
+	"main": "dist/src/app.js",
 	"scripts": {
-		"build:restore": "rm -rf dist/ ods_sauron_sftw.exe assets/build.zip build/ assets/task-uninstall.exe  assets/task-install.exe tmp/",
-		"build:ts": "tsc -p tsconfig.build.json && cp -r src/views/public dist/views",
-		"create:install": "pkg assets/js/task-install.js --config assets/tasks-pkg-config.json -o assets/task-install.exe",
-		"create:uninstall": "pkg assets/js/task-uninstall.js --config assets/tasks-pkg-config.json -o assets/task-uninstall.exe",
-		"build:webpack": "webpack --stats-children --stats-error-details",
-		"build:prepare": "cp -r assets/* build/ && rm -rf build/js/",
-		"build:webpack-prepare": "npm run create:install && npm run create:uninstall && npm run build:webpack &&  npm run build:prepare",
-		"build:app:exe": "pkg build/bundle.js --config build/bundle-pkg-config.json -o build/build.exe && create-nodew-exe build/build.exe build/build.exe ",
-		"deploy:zip": "node assets/js/compress.js",
-		"deploy:exe": "pkg assets/js/decompress.js --config ./assets/deploy-pkg-config.json --output ods_sauron_sftw.exe",
-		"deploy:remove-unnecessary": "rm -rf build/*.json",
-		"deploy:start": "npm run build:restore && npm run build:ts && npm run build:webpack-prepare && npm run build:app:exe && npm run deploy:remove-unnecessary && npm run deploy:zip && npm run deploy:exe",
-		"start": "node dist/app.js",
-		"start:dev": "nodemon src/app.ts",
+		"build:restore": "rm -rf logs/ dist/ build/ tmp/",
+		"build:ts": "tsc && cp -r public/ dist/public",
+		"start:dev": "npm run build:restore && npm run build:ts && cross-env NODE_ENV=dev electron .",
+		"deploy:prepare": "mkdir build && cp -r assets/task.xml build/",
+		"deploy:start": "npm run build:restore && npm run build:ts && npm run deploy:prepare && electron-builder",
 		"test": "vitest run",
 		"test:building": "vitest run --config ./vite.building.config.ts",
 		"lint:staged": "lint-staged",
-		"dev:start": "nodemon src/app.ts",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"rebuild": "bash.exe -c ./node_modules/.bin/electron-rebuild.cmd"
+	},
+	"build": {
+		"appId": "com.odssauron.electron",
+		"directories": {
+			"output": "./build/"
+		},
+		"win": {
+			"target": "nsis",
+			"requestedExecutionLevel": "requireAdministrator"
+		},
+		"nsis": {
+			"allowToChangeInstallationDirectory": false,
+			"oneClick": true,
+			"perMachine": true,
+			"deleteAppDataOnUninstall": true,
+			"runAfterFinish": false,
+			"createDesktopShortcut": false,
+			"createStartMenuShortcut": false,
+			"installerIcon": "assets/icon.png",
+			"license": "license.md",
+			"include": "assets/custom.nsh"
+		}
 	},
 	"lint-staged": {
 		"**/*.{ts}": [
@@ -30,9 +46,7 @@
 		]
 	},
 	"devDependencies": {
-		"@babel/cli": "^7.20.7",
-		"@babel/core": "^7.20.12",
-		"@babel/preset-env": "^7.20.2",
+		"@electron/rebuild": "^3.2.10",
 		"@types/axios": "^0.14.0",
 		"@types/express": "^4.17.17",
 		"@types/ffi-napi": "^4.0.7",
@@ -42,36 +56,25 @@
 		"@types/ref-napi": "^3.0.7",
 		"@typescript-eslint/eslint-plugin": "^5.43.0",
 		"@typescript-eslint/parser": "^5.43.0",
-		"copy-webpack-plugin": "^11.0.0",
-		"create-nodew-exe": "^1.0.10",
+		"electron": "^23.1.4",
+		"electron-builder": "^23.6.0",
 		"eslint": "^8.27.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"husky": "^8.0.0",
 		"lint-staged": "^13.1.0",
-		"nodemon": "^2.0.20",
-		"pkg": "^5.8.0",
 		"prettier": "^2.8.3",
-		"ts-node": "^10.9.1",
-		"ttypescript": "^1.5.13",
 		"typescript": "^4.8.4",
-		"vitest": "^0.28.1",
-		"webpack": "^5.75.0",
-		"webpack-cli": "^5.0.1",
-		"webpack-node-externals": "^3.0.0"
+		"vitest": "^0.28.1"
 	},
 	"dependencies": {
-		"adm-zip": "^0.5.10",
+		"@lwahonen/ffi-napi": "^4.0.12",
+		"@lwahonen/ref-napi": "^4.0.8",
+		"@nodert-win10-rs3/windows.devices.geolocation": "^0.4.4",
 		"axios": "^1.3.3",
-		"babel-loader": "^9.1.2",
+		"cross-env": "^7.0.3",
 		"dotenv": "^16.0.3",
-		"dotenv-expand": "^10.0.0",
-		"dotenv-webpack": "^8.0.1",
-		"express": "^4.18.2",
-		"ffi-napi": "^4.0.3",
 		"node-cron": "^3.0.2",
-		"ref-napi": "^3.0.3",
-		"windows-scheduler": "^1.0.1",
 		"winston": "^3.8.2"
 	}
 }
