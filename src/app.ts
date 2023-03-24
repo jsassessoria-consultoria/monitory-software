@@ -1,35 +1,35 @@
-import cron from 'node-cron';
-
-import { setEnv } from '../config/dotenv';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import setEnv from './config/dotenv';
 setEnv();
 
-import open from './services/open';
-import { server } from './views/server';
-import collect from './monitoring/collectAndSend';
-import { readAndSend } from './monitoring/backupAndSend';
-import { cronExpression } from './utils/cronExpressions';
+import callCron from './services/callCron';
+import createWindow from '../electron/window';
+import { tokenHandler } from './handlers/tokenHandler';
 
-const PORT = +process.env.PORT;
-const LOCAL_URL = process.env.LOCAL_URL;
-//url da API do backend do ODS SAURON
-const _API_URL = process.env.API_URL;
-let TOKEN: string | null = null;
-
-const createLoop = (timer: number) => {
-  const timeout = setTimeout(async () => {
-    TOKEN = server.token();
-    if (!TOKEN && !server.isServerUp()) {
-      server.start(PORT, _API_URL);
-      open(LOCAL_URL);
+let mainWindow: BrowserWindow;
+app.whenReady().then(() => {
+  ipcMain.handle('close', (event, token) => {
+    if (token) {
+      tokenHandler.setToken(token);
+      mainWindow.hide();
+      callCron();
     }
-    createLoop(timer);
-  }, timer);
+  });
+  if (process.platform === 'win32')
+    mainWindow = createWindow(tokenHandler.getToken());
 
-  if (!TOKEN) {
-    cron.schedule(cronExpression.EVERY_10_SECONDS, collect); // Não retorna Erro
-    cron.schedule(cronExpression.EVERY_1_HOURS, readAndSend); // Não retorna Erro
-    clearTimeout(timeout);
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length > 1) app.quit();
+  });
+});
+
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('second-instance', (event, argv, cwd) => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
   }
-};
-
-createLoop(1000);
+});
