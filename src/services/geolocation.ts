@@ -5,9 +5,9 @@ import logger from '../config/logger';
 import { error } from '../handlers/errorHandler';
 
 export interface IGeolocation {
-  lat: number;
-  long: number;
-  isAccuracy: boolean;
+  lat: number | null;
+  long: number | null;
+  isAccuracy: boolean | null;
 }
 
 const getGeolocation = async (): Promise<IGeolocation | null> => {
@@ -46,7 +46,12 @@ const geolocationByIP = async (): Promise<IGeolocation | null> => {
     return geolocation;
   } catch (e) {
     logger.error(error.COLLECT_LOCATION_EMPTY(e));
-    return null;
+    const geolocationNulled: IGeolocation = {
+      lat: null,
+      long: null,
+      isAccuracy: null
+    };
+    return geolocationNulled;
   }
 };
 
