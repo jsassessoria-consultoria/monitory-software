@@ -13,8 +13,6 @@ function createWindow(TOKEN: string) {
     autoHideMenuBar: true,
     show: TOKEN ? false : true
   });
-  mainWindow.webContents.openDevTools();
-  console.log(TOKEN);
   if (TOKEN) {
     callCron();
   }

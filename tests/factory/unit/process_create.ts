@@ -6,7 +6,6 @@ export const openProcess = async () => {
       'start explorer.exe',
       { shell: 'cmd.exe' },
       (error, stdout, stderr) => {
-        console.log(stdout, stderr);
         setTimeout(() => {
           resolve();
         }, 2000);
