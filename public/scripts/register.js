@@ -9,6 +9,7 @@ window.onload = () => {
 
     if(!form || !deviceInput || !editIcon || !userInput){
         alert('Erro no elemento')
+        window.windowState.error('Erro no elemento')
         throw new Error('Element not found')
     }
 
@@ -22,10 +23,10 @@ window.onload = () => {
         }
 
         sendData({
-            deviceName: deviceInput.value,
-            user: userInput.value
+            nome: deviceInput.value,
+            usuario: userInput.value
         })
-    
+        
     }
 
     editIcon.addEventListener('click', () => {
@@ -43,6 +44,7 @@ const sendData = async(data) => {
             window.windowState.closeWindow(token)
         },10000)
     }catch(e){
+        window.windowState.error(JSON.stringify(e))
         alert(`Error no servidor: ${e.message}`)
         throw new Error('Could not send data')
     }
@@ -55,6 +57,7 @@ const registerDone = () => {
     const div = document.querySelector('.authorization-done')
 
     if(!main || !div){
+        window.windowState.error('Erro no elemento do registro')
         alert('Erro no elemento do registro')
         throw new Error('Element not found')
     }

@@ -8,7 +8,8 @@ interface IRegister {
 }
 
 contextBridge.exposeInMainWorld('windowState', {
-  closeWindow: (token: string) => ipcRenderer.invoke('close', token)
+  closeWindow: (token: string) => ipcRenderer.invoke('close', token),
+  error: (errors: string) => ipcRenderer.invoke('errors', errors)
 });
 
 contextBridge.exposeInMainWorld('devices', {
@@ -22,9 +23,9 @@ contextBridge.exposeInMainWorld('env', {
 contextBridge.exposeInMainWorld('axios', {
   register: async (data: IRegister) => {
     const response = await axios.post(
-      process.env.API_URL.concat('/register'),
+      process.env.API_URL.concat('/device'),
       data
     );
-    return response.data.token;
+    return response;
   }
 });

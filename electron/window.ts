@@ -13,11 +13,12 @@ function createWindow(TOKEN: string) {
     autoHideMenuBar: true,
     show: TOKEN ? false : true
   });
+  mainWindow.webContents.openDevTools();
+  console.log(TOKEN);
   if (TOKEN) {
     callCron();
   }
   createTray(TOKEN);
-
   mainWindow.loadFile('public/index.html');
   return mainWindow;
 }
