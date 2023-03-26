@@ -5,8 +5,9 @@ import ffi from '@lwahonen/ffi-napi';
 import ref from '@lwahonen/ref-napi';
 import logger from '../config/logger';
 import { error } from '../handlers/errorHandler';
+import collect from '../monitoring/collectAndSend';
 
-const getWindowsProcesses = () => {
+export const getWindowsProcesses = () => {
   return new Promise((resolve, reject) => {
     const Library = ffi.Library;
     /**
@@ -101,17 +102,13 @@ const getWindowsProcesses = () => {
   });
 };
 
-const collectProcesses = async (): Promise<string[]> => {
+export const collectProcesses = async (): Promise<string[]> => {
   try {
     const processes: string[] = await getWindowsProcesses();
-    console.log(processes);
     logger.info('Data Collected');
     logger.verbose(processes);
-
     return processes;
   } catch (e) {
     error.COLLECT_DATA(e);
   }
 };
-
-export default collectProcesses;

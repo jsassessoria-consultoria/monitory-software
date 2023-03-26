@@ -1,7 +1,7 @@
 import { sendProcesses } from '../api/process';
 import { error } from '../handlers/errorHandler';
 import writeBackupFilePath from '../services/write';
-import collectProcesses from '../services/collect';
+import { collectProcesses } from '../services/collect';
 import {
   getGeolocation,
   IGeolocation

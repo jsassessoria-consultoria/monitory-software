@@ -3,9 +3,7 @@ import dotenv from 'dotenv';
 import { app } from 'electron';
 
 const setEnv = () => {
-  dotenv.config({
-    path: path.join(app.getAppPath(), '.env')
-  });
+  dotenv.config();
 };
 
 export default setEnv;
