@@ -15,6 +15,10 @@ app.whenReady().then(() => {
       callCron();
     }
   });
+
+  ipcMain.handle('errors', (event, errors) => {
+    console.log(JSON.parse(errors));
+  });
   if (process.platform === 'win32')
     mainWindow = createWindow(tokenHandler.getToken());
 

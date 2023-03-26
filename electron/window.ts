@@ -17,7 +17,6 @@ function createWindow(TOKEN: string) {
     callCron();
   }
   createTray(TOKEN);
-
   mainWindow.loadFile('public/index.html');
   return mainWindow;
 }
