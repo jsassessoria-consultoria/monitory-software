@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { backupPath } from '../utils/paths';
 
-const checkFolderExistence = (
+export const checkFolderExistence = (
   filePath: string,
   filename: string
 ) => {
@@ -12,12 +12,15 @@ const checkFolderExistence = (
   return path.join(filePath, filename);
 };
 
-const writeFile = (stream: fs.WriteStream, processes: string[]) => {
+export const writeFile = (
+  stream: fs.WriteStream,
+  processes: string[]
+) => {
   stream.write(processes.join('\n') + '\n');
   stream.end();
 };
 
-const fileName = () => {
+export const fileName = () => {
   const today = new Date();
   const day = today.getDate();
   const month = today.getMonth() + 1;
@@ -27,7 +30,7 @@ const fileName = () => {
   return date.concat('.txt'); //Data atual "AAAA-MM-DD"
 };
 
-const writeBackupFilePath = (processes: string[]) => {
+export const writeBackupFilePath = (processes: string[]) => {
   const filePath = backupPath();
   const filename = fileName();
   const fullPath = checkFolderExistence(filePath, filename);

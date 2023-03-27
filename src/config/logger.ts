@@ -13,7 +13,10 @@ const logger = winston.createLogger({
   ]
 });
 
-if (process.env.NODE_ENV !== 'dev') {
+if (
+  process.env.NODE_ENV !== 'dev' &&
+  process.env.NODE_ENV !== 'test'
+) {
   console.log(globals.__deployAbsolutePath());
   logger.add(
     new winston.transports.File({
