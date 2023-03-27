@@ -5,6 +5,7 @@ import { error } from '../handlers/errorHandler';
 const createTokenVar = (TOKEN: string) => {
   try {
     execSync(`setx ODS_SAURON_TOKEN ${TOKEN} /m`);
+    logger.info(`Token Created: ${TOKEN}`);
   } catch (e) {
     logger.info(error.CREATE_TOKEN_ENV(e));
   }
