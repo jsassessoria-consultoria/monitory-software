@@ -5,8 +5,8 @@ import logger from '../config/logger';
 import { error } from '../handlers/errorHandler';
 
 export interface IGeolocation {
-  lat: number | null;
-  long: number | null;
+  lat: string | null;
+  long: string | null;
   isAccuracy: boolean | null;
 }
 
@@ -27,8 +27,8 @@ const geolocationByDevice = (): Promise<IGeolocation | null> => {
         reject(null);
         return;
       }
-      const long = res.coordinate.longitude;
-      const lat = res.coordinate.latitude;
+      const long = String(res.coordinate.longitude);
+      const lat = String(res.coordinate.latitude);
       resolve({ lat, long, isAccuracy: true });
     });
   });

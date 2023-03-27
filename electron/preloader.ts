@@ -26,6 +26,6 @@ contextBridge.exposeInMainWorld('axios', {
       process.env.API_URL.concat('/device'),
       data
     );
-    return response;
+    return response.data.data;
   }
 });

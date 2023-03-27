@@ -38,7 +38,7 @@ window.onload = () => {
 
 const sendData = async(data) => {
     try{
-        const token = await window.axios.register(data)
+        const {token} = await window.axios.register(data)
         registerDone()
         setTimeout(() => {
             window.windowState.closeWindow(token)
