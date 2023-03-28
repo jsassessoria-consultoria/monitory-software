@@ -6,7 +6,10 @@ const backupPath = () => {
     globals.__deployAbsolutePath(),
     'tmp'
   );
-  if (process.env.NODE_ENV === 'dev') {
+  if (
+    process.env.NODE_ENV === 'dev' ||
+    process.env.NODE_ENV === 'test'
+  ) {
     filePath = path.join(globals.__localAbsolutePath(), 'tmp');
   }
 

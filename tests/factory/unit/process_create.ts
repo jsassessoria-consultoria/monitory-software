@@ -31,30 +31,3 @@ export const closeProcess = async () => {
     );
   });
 };
-
-// const closeProcessess = async (PID: number) => {
-//   return new Promise<void>((resolve, reject) => {
-//     exec(
-//       `taskkill /F /PID ${PID}`,
-//       { shell: 'cmd.exe' },
-//       (error, stdout, stderr) => {
-//         resolve();
-//       }
-//     );
-//   });
-// };
-
-// const findHigherPids = (string: string) => {
-//   // separa a saída por linha
-//   const lines = string.trim().split('\n');
-//   const PIDS = lines.map(line => {
-//     const topics = line.split(',');
-//     return Number(topics?.at(1).replaceAll('"', ''));
-//   });
-
-//   const minorPID = PIDS.reduce(
-//     (value, pid) => (pid <= value ? pid : value),
-//     Infinity
-//   );
-//   return PIDS.filter(pid => pid != minorPID);
-// };

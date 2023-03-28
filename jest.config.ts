@@ -2,6 +2,7 @@ import type { JestConfigWithTsJest } from 'ts-jest';
 
 const jestConfig: JestConfigWithTsJest = {
   preset: 'ts-jest',
+  runner: '@kayahr/jest-electron-runner/main',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   globals: {
