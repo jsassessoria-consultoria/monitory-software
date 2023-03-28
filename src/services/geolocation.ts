@@ -19,6 +19,7 @@ export const getGeolocation =
     }
   };
 
+
 export const geolocationByDevice =
   (): Promise<IGeolocation | null> => {
     const locator = new geolocation.Geolocator();
@@ -33,6 +34,7 @@ export const geolocationByDevice =
         const lat = String(res.coordinate.latitude);
         resolve({ lat, long, isAccuracy: true });
       });
+
     });
   };
 
