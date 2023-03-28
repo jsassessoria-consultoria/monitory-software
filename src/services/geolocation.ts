@@ -10,52 +10,59 @@ export interface IGeolocation {
   isAccuracy: boolean | null;
 }
 
-const getGeolocation = async (): Promise<IGeolocation | null> => {
-  try {
-    return await geolocationByDevice();
-  } catch (e) {
-    return await geolocationByIP();
-  }
-};
+export const getGeolocation =
+  async (): Promise<IGeolocation | null> => {
+    try {
+      return await geolocationByDevice();
+    } catch (e) {
+      return await geolocationByIP();
+    }
+  };
 
-const geolocationByDevice = (): Promise<IGeolocation | null> => {
-  const locator = new geolocation.Geolocator();
-  return new Promise((resolve, reject) => {
-    locator.getGeopositionAsync(function (err, res) {
-      if (err) {
-        console.error(err);
-        reject(null);
-        return;
-      }
-      const long = String(res.coordinate.longitude);
-      const lat = String(res.coordinate.latitude);
-      resolve({ lat, long, isAccuracy: true });
+
+export const geolocationByDevice =
+  (): Promise<IGeolocation | null> => {
+    const locator = new geolocation.Geolocator();
+    return new Promise((resolve, reject) => {
+      locator.getGeopositionAsync(function (err, res) {
+        if (err) {
+          console.error(err);
+          reject(null);
+          return;
+        }
+        const long = String(res.coordinate.longitude);
+        const lat = String(res.coordinate.latitude);
+        resolve({ lat, long, isAccuracy: true });
+      });
+
     });
-  });
-};
+  };
 
-const geolocationByIP = async (): Promise<IGeolocation | null> => {
-  const ip = getIPAddress();
-  try {
-    const response = await axios.get(`http://ip-api.com/json/${ip}`);
-    const geolocation: IGeolocation = {
-      lat: response.data.lat,
-      long: response.data.lon,
-      isAccuracy: false
-    };
-    return geolocation;
-  } catch (e) {
-    logger.error(error.COLLECT_LOCATION_EMPTY(e));
-    const geolocationNulled: IGeolocation = {
-      lat: null,
-      long: null,
-      isAccuracy: null
-    };
-    return geolocationNulled;
-  }
-};
+export const geolocationByIP =
+  async (): Promise<IGeolocation | null> => {
+    const ip = getIPAddress();
+    try {
+      const response = await axios.get(
+        `http://ip-api.com/json/${ip}`
+      );
+      const geolocation: IGeolocation = {
+        lat: response.data.lat,
+        long: response.data.lon,
+        isAccuracy: false
+      };
+      return geolocation;
+    } catch (e) {
+      logger.error(error.COLLECT_LOCATION_EMPTY(e));
+      const geolocationNulled: IGeolocation = {
+        lat: null,
+        long: null,
+        isAccuracy: null
+      };
+      return geolocationNulled;
+    }
+  };
 
-function getIPAddress() {
+export function getIPAddress() {
   const interfaces = networkInterfaces();
   for (const devName in interfaces) {
     const iface = interfaces[devName];
@@ -73,5 +80,3 @@ function getIPAddress() {
   }
   return '0.0.0.0';
 }
-
-export { getGeolocation };

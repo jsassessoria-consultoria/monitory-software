@@ -6,12 +6,13 @@
 	"author": "ODSSauron Team",
 	"main": "dist/src/app.js",
 	"scripts": {
+		"installing": "rm -rf node-modules package-lock.json && npm pkg delete dependencies.@lwahonen/ffi-napi && npm i && npm i @lwahonen/ffi-napi",
 		"build:restore": "rm -rf logs/ dist/ build/ tmp/",
 		"build:ts": "tsc && cp -r public/ dist/public",
 		"start:dev": "npm run build:restore && npm run build:ts && cross-env NODE_ENV=dev electron .",
 		"deploy:prepare": "mkdir build && cp -r assets/task.xml build/",
 		"deploy:building": "npm run build:restore && npm run build:ts && npm run deploy:prepare",
-		"deploy:start": "deploy:building && electron-builder",
+		"deploy:start": "npm run deploy:building && electron-builder --publish never",
 		"test": "cross-env NODE_ENV=test vitest run",
 		"test:jest": "cross-env NODE_ENV=test jest --runInBand --passWithNoTests",
 		"test:building": "vitest run --config ./vite.building.config.ts",
@@ -36,7 +37,7 @@
 			"runAfterFinish": false,
 			"createDesktopShortcut": false,
 			"createStartMenuShortcut": false,
-			"installerIcon": "assets/icon.png",
+			"installerIcon": "assets/icon.ico",
 			"license": "license.md",
 			"include": "assets/custom.nsh"
 		}
@@ -67,6 +68,7 @@
 		"typescript": "^4.8.4"
 	},
 	"dependencies": {
+		"@kayahr/jest-electron-runner": "^29.3.1",
 		"@lwahonen/ffi-napi": "^4.0.12",
 		"@lwahonen/ref-napi": "^4.0.8",
 		"@nodert-win10-rs3/windows.devices.geolocation": "^0.4.4",
