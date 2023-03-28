@@ -58,7 +58,7 @@ jobs:
       # Delete package-lock.json
       - name: Install node-gyp
         run: rm -rf node-modules package-lock.json
-        shell: pwsh
+        shell: bash
 
       # Deleta pacotes do packgage.json ( pecisam ser instalado somente após o NodeRT buildar )
       - name: Delete package that should be added before
