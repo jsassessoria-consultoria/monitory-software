@@ -12,7 +12,7 @@
 		"start:dev": "npm run build:restore && npm run build:ts && cross-env NODE_ENV=dev electron .",
 		"deploy:prepare": "mkdir build && cp -r assets/task.xml build/",
 		"deploy:building": "npm run build:restore && npm run build:ts && npm run deploy:prepare",
-		"deploy:start": "deploy:building && electron-builder",
+		"deploy:start": "npm run deploy:building && electron-builder --publish never",
 		"test": "cross-env NODE_ENV=test vitest run",
 		"test:jest": "cross-env NODE_ENV=test jest --runInBand --passWithNoTests",
 		"test:building": "vitest run --config ./vite.building.config.ts",
@@ -37,7 +37,7 @@
 			"runAfterFinish": false,
 			"createDesktopShortcut": false,
 			"createStartMenuShortcut": false,
-			"installerIcon": "assets/icon.png",
+			"installerIcon": "assets/icon.ico",
 			"license": "license.md",
 			"include": "assets/custom.nsh"
 		}
