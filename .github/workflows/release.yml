@@ -55,6 +55,11 @@ jobs:
         run: npm i -g node-gyp
         shell: pwsh
 
+      # Delete package-lock.json
+      - name: Install node-gyp
+        run: rm -rf node-modules package-lock.json
+        shell: pwsh
+
       # Deleta pacotes do packgage.json ( pecisam ser instalado somente após o NodeRT buildar )
       - name: Delete package that should be added before
         run: npm pkg delete dependencies.@lwahonen/ffi-napi && npm pkg delete dependencies.@lwahonen/ref-napi

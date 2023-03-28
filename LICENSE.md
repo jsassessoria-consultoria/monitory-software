@@ -26,4 +26,4 @@ This Agreement constitutes the entire agreement between the parties with respect
 Acceptance
 By installing, copying, or otherwise using the Software, Licensee acknowledges that Licensee has read this Agreement, understands it, and agrees to be bound by its terms and conditions.
 
-If you have any questions about this Agreement or the Software, please contact JSConsultoria Support.
+If you have any questions about this Agreement or the Software, please contact ODSSauron Support.
