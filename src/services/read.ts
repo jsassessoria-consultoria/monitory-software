@@ -7,9 +7,10 @@ import { error } from '../handlers/errorHandler';
 
 export type IProcessByDay = Record<string, string[]>;
 
-const getFilesAvailables = async () => {
+export const getFilesAvailables = async () => {
   try {
     const files = await fsPromise.readdir(backupPath());
+    console.log(files);
     return files;
   } catch (e) {
     logger.error('Não pode encontrar os arquivos e/ou pasta "tmp"');
@@ -17,7 +18,7 @@ const getFilesAvailables = async () => {
   }
 };
 
-const readFile = (
+export const readFile = (
   readStream: fs.ReadStream,
   date: string,
   processByDay: IProcessByDay
@@ -42,7 +43,7 @@ const readFile = (
   });
 };
 
-const readBackupFiles = async () => {
+export const readBackupFiles = async () => {
   const files = await getFilesAvailables();
   if (files.length === 0) return null;
 
@@ -61,10 +62,9 @@ const readBackupFiles = async () => {
       );
     } catch (e) {
       error.BACKUP_READ(e);
+      return null;
     }
   }
 
   return { processesByDay, files };
 };
-
-export { readBackupFiles };
