@@ -27,7 +27,7 @@ jobs:
       - name: Create .env
         run: |
           touch .env
-          echo API_URL="https://monitory-dashboard-oliveiraajp.vercel.app" >> .env
+          echo API_URL="${{secrets.POSTGRES_USERNAME}}" >> .env
           cat .env
 
         # Instala o VS2019
